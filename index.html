@@ -759,13 +759,18 @@ async function submitDemographics(){
 
   if(!ok){ firstErr.scrollIntoView({behavior:'smooth', block:'center'}); return; }
 
-  // ── Pre-populate ALL possible question fields with -1 so every row in the
-  //    CSV has the same columns regardless of which scenario was shown.
-  //    Max questions: S2 (3 specific) + 21 common = 24 total.
-  //    Likert fields:  F1 … F22  (first 22 questions are Likert)
-  //    Free-text fields: F23_text (required) and F24_text (optional feedback)
-  const MAX_LIKERT = 22;   // highest possible Likert question index
-  const TEXT_FIELDS = ['F23_text', 'F24_text'];
+  // ── Pre-populate ALL possible question fields with -1 / '' so every row in
+  //    the CSV has identical columns regardless of scenario.
+  //
+  //    Scenario  | specific Qs | text field keys
+  //    S0        |  0          | F20_text, F21_text
+  //    S1/S3/S4  |  2          | F22_text, F23_text
+  //    S2        |  3          | F23_text, F24_text
+  //
+  //    → Likert defaults:    F1 … F22  = -1
+  //    → Text defaults: F20_text … F24_text = ''
+  const MAX_LIKERT = 22;
+  const TEXT_FIELDS = ['F20_text','F21_text','F22_text','F23_text','F24_text'];
 
   const defaults = {};
   for (let n = 1; n <= MAX_LIKERT; n++) defaults['F' + n] = -1;
