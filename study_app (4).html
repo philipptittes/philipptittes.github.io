@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aybee.de – Schlafprodukte</title>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --amazon-dark:#131921; --amazon-mid:#232f3e; --amazon-orange:#FF9900;
+    --amazon-yellow:#F0C14B; --amazon-yellow-dark:#a88734; --amazon-link:#007185;
+    --bg:#EAEDED; --card:#ffffff; --border:#D5D9D9;
+    --text-dark:#0F1111; --text-mid:#565959; --text-light:#767676;
+    --star:#FF9900; --prime:#00A8E1; --success:#007600; --danger:#B12704;
+    --radius:4px; --font-body:'DM Sans',sans-serif; --font-serif:'Literata',Georgia,serif;
+  }
+  body { font-family:var(--font-body); background:var(--bg); color:var(--text-dark); font-size:14px; line-height:1.5; }
+
+  /* HEADER */
+  .site-header { background:var(--amazon-dark); }
+  .header-main { display:flex; align-items:center; gap:12px; padding:8px 16px; }
+  .logo { font-family:var(--font-serif); font-size:24px; font-weight:300; color:white; letter-spacing:-0.5px; cursor:pointer; white-space:nowrap; }
+  .logo span { color:var(--amazon-orange); }
+  .header-search { flex:1; display:flex; max-width:800px; }
+  .header-search input { flex:1; height:38px; padding:0 10px; border:none; font-size:14px; border-radius:var(--radius) 0 0 var(--radius); outline:none; }
+  .header-search button { height:38px; width:46px; background:var(--amazon-orange); border:none; cursor:pointer; border-radius:0 var(--radius) var(--radius) 0; display:flex; align-items:center; justify-content:center; }
+  .cart-btn { display:flex; align-items:center; gap:6px; color:white; font-size:14px; cursor:pointer; background:none; border:none; padding:4px 8px; border-radius:var(--radius); }
+  .cart-btn:hover { outline:1px solid white; }
+  .cart-count { background:var(--amazon-orange); color:var(--amazon-dark); border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; }
+  .header-sub { background:var(--amazon-mid); padding:4px 16px; display:flex; gap:4px; flex-wrap:wrap; }
+  .header-sub a { color:white; font-size:13px; padding:4px 8px; border-radius:var(--radius); cursor:pointer; text-decoration:none; white-space:nowrap; }
+  .header-sub a:hover { outline:1px solid white; }
+  .breadcrumb { padding:8px 16px; font-size:13px; color:var(--text-mid); }
+  .breadcrumb a { color:var(--amazon-link); cursor:pointer; text-decoration:none; }
+  .breadcrumb a:hover { text-decoration:underline; }
+
+  /* PAGES */
+  .page { display:none; }
+  .page.active { display:block; }
+  .container { max-width:1280px; margin:0 auto; padding:0 16px; }
+
+  /* INFO / WELCOME CARDS */
+  .info-wrap { max-width:720px; margin:48px auto; }
+  .info-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:40px 48px; }
+  .info-logo { font-family:var(--font-serif); font-size:28px; font-weight:300; color:var(--text-dark); margin-bottom:28px; }
+  .info-logo span { color:var(--amazon-orange); }
+  .info-card h2 { font-size:20px; font-weight:500; margin-bottom:16px; }
+  .info-body { font-size:15px; line-height:1.85; color:var(--text-dark); white-space:pre-wrap; }
+  .info-badge { display:inline-block; font-size:12px; padding:3px 10px; border-radius:12px; font-weight:500; margin-bottom:20px; }
+  .info-divider { height:1px; background:var(--border); margin:24px 0; }
+  .info-btn { background:var(--amazon-orange); color:white; border:1px solid #a66000; padding:13px 40px; border-radius:24px; font-size:15px; cursor:pointer; font-family:var(--font-body); font-weight:500; margin-top:28px; transition:background 0.1s; }
+  .info-btn:hover { background:#e68900; }
+  .info-note { font-size:12px; color:var(--text-light); margin-top:14px; }
+
+  /* SHOP */
+  .shop-layout { display:grid; grid-template-columns:220px 1fr; gap:16px; padding:12px 0; }
+  .sidebar { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px; }
+  .sidebar h3 { font-size:16px; font-weight:500; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .filter-section { margin-bottom:16px; }
+  .filter-section h4 { font-size:14px; font-weight:500; margin-bottom:8px; }
+  .filter-section label { display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:5px; cursor:pointer; }
+  .filter-section label:hover { color:var(--amazon-link); }
+  .filter-section input[type=checkbox] { accent-color:var(--amazon-orange); }
+  .stars { color:var(--star); letter-spacing:1px; }
+  .price-range { width:100%; accent-color:var(--amazon-orange); }
+  .results-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .results-count span { color:var(--danger); font-weight:500; }
+  .sort-select { padding:6px 10px; border:1px solid var(--border); border-radius:var(--radius); font-size:13px; font-family:var(--font-body); background:var(--card); }
+  .product-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .product-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px; cursor:pointer; transition:box-shadow 0.15s; display:flex; flex-direction:column; }
+  .product-card:hover { box-shadow:0 2px 12px rgba(0,0,0,0.15); border-color:#aaa; }
+  .product-img { width:100%; aspect-ratio:1; object-fit:contain; background:#f7f7f7; border-radius:var(--radius); margin-bottom:10px; padding:8px; }
+  .product-brand { font-size:12px; color:var(--text-mid); margin-bottom:2px; text-transform:uppercase; letter-spacing:0.5px; }
+  .product-name { font-size:13px; margin-bottom:6px; line-height:1.4; color:var(--amazon-link); }
+  .product-rating { display:flex; align-items:center; gap:5px; margin-bottom:5px; }
+  .review-count { font-size:12px; color:var(--amazon-link); }
+  .product-price { font-size:18px; font-weight:500; margin-bottom:4px; }
+  .add-cart-btn { margin-top:auto; background:var(--amazon-yellow); border:1px solid var(--amazon-yellow-dark); color:var(--text-dark); padding:6px; border-radius:20px; font-size:13px; cursor:pointer; font-family:var(--font-body); }
+  .add-cart-btn:hover { background:#ddb347; }
+
+  /* PRODUCT DETAIL */
+  .product-detail { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin:12px 0; }
+  .detail-grid { display:grid; grid-template-columns:380px 1fr 240px; gap:24px; }
+  .detail-main-img { width:100%; aspect-ratio:1; object-fit:contain; background:#f7f7f7; border-radius:var(--radius); padding:16px; margin-bottom:10px; }
+  .detail-thumbs { display:flex; gap:8px; flex-wrap:wrap; }
+  .detail-thumb { width:52px; height:52px; object-fit:contain; background:#f7f7f7; border:1px solid var(--border); border-radius:var(--radius); padding:4px; cursor:pointer; }
+  .detail-thumb:hover,.detail-thumb.active { border-color:var(--amazon-orange); }
+  .detail-info h1 { font-size:22px; font-weight:400; line-height:1.35; margin-bottom:8px; }
+  .brand-link { color:var(--amazon-link); font-size:14px; text-decoration:underline; cursor:pointer; display:block; margin-bottom:6px; }
+  .detail-divider { height:1px; background:var(--border); margin:12px 0; }
+  .price-big { font-size:28px; }
+  .price-big sup { font-size:16px; vertical-align:top; margin-top:4px; }
+  .free-shipping { color:var(--amazon-link); font-size:14px; margin-top:4px; }
+  .feature-list { list-style:none; padding:0; margin:12px 0; }
+  .feature-list li { font-size:14px; padding:3px 0 3px 16px; position:relative; }
+  .feature-list li::before { content:"•"; position:absolute; left:0; font-weight:700; }
+  .buy-box { border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
+  .buy-price { font-size:24px; margin-bottom:8px; }
+  .buy-price sup { font-size:13px; vertical-align:top; margin-top:3px; }
+  .prime-line { color:#00A8E1; font-weight:600; font-size:13px; margin-bottom:8px; }
+  .stock-ok { color:var(--success); font-size:14px; font-weight:500; margin-bottom:10px; }
+  .qty-select { width:100%; padding:6px 8px; border:1px solid var(--border); border-radius:var(--radius); font-size:13px; font-family:var(--font-body); background:var(--card); margin-bottom:8px; }
+  .btn-cart { width:100%; background:var(--amazon-yellow); border:1px solid var(--amazon-yellow-dark); color:var(--text-dark); padding:9px; border-radius:20px; font-size:14px; cursor:pointer; font-family:var(--font-body); font-weight:500; margin-bottom:8px; }
+  .btn-cart:hover { background:#ddb347; }
+  .btn-survey { width:100%; background:var(--amazon-orange); border:1px solid #a66000; color:white; padding:9px; border-radius:20px; font-size:14px; cursor:pointer; font-family:var(--font-body); font-weight:500; }
+  .btn-survey:hover { background:#e68900; }
+  .buy-box-row { display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; }
+  .buy-box-row span:first-child { color:var(--text-mid); }
+
+  /* CERTAINTY SCALE (S2 interstitial) */
+  .certainty-wrap { max-width:680px; margin:40px auto; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:40px 48px; }
+  .certainty-wrap h2 { font-size:20px; font-weight:500; margin-bottom:8px; }
+  .certainty-subtitle { color:var(--text-mid); font-size:14px; margin-bottom:32px; line-height:1.6; }
+  .certainty-product-banner { display:flex; align-items:center; gap:14px; background:#f7f7f7; border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin-bottom:32px; }
+  .certainty-product-banner img { width:60px; height:60px; object-fit:contain; }
+  .certainty-product-banner .cp-name { font-size:13px; color:var(--text-dark); font-weight:400; line-height:1.4; }
+  .certainty-product-banner .cp-price { font-size:17px; font-weight:500; margin-top:4px; }
+  .certainty-q { font-size:16px; font-weight:500; margin-bottom:20px; line-height:1.5; }
+  .certainty-scale { display:flex; gap:5px; flex-wrap:nowrap; width:100%; }
+  .certainty-opt { flex:1; min-width:0; }
+  .certainty-opt input { display:none; }
+  .certainty-opt label { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; width:100%; padding:10px 2px; border-radius:var(--radius); border:1px solid var(--border); background:#fafafa; transition:all 0.1s; }
+  .certainty-opt label:hover { background:#fff8ee; border-color:var(--amazon-orange); }
+  .certainty-opt input:checked + label { background:var(--amazon-orange); color:white; border-color:#a66000; font-weight:600; }
+  .certainty-val { font-size:17px; font-weight:500; }
+  .certainty-desc { font-size:9px; text-align:center; line-height:1.2; color:var(--text-mid); white-space:nowrap; }
+  .certainty-opt input:checked + label .certainty-desc { color:rgba(255,255,255,0.9); }
+  .certainty-anchors { display:flex; justify-content:space-between; font-size:11px; color:var(--text-light); margin-top:6px; }
+  .certainty-error { color:var(--danger); font-size:13px; margin-top:12px; display:none; }
+
+  /* SURVEY */
+  .survey-wrap { max-width:820px; margin:20px auto; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:36px; }
+  .survey-wrap h2 { font-size:22px; font-weight:400; margin-bottom:8px; }
+  .survey-subtitle { color:var(--text-mid); font-size:14px; margin-bottom:24px; line-height:1.6; }
+  .survey-progress { height:5px; background:var(--border); border-radius:3px; margin-bottom:32px; }
+  .survey-progress-bar { height:100%; background:var(--amazon-orange); border-radius:3px; transition:width 0.3s; }
+  .q-section-header { background:#f5f5f5; border-left:4px solid var(--amazon-orange); padding:10px 14px; margin:32px 0 18px; border-radius:0 var(--radius) var(--radius) 0; }
+  .q-section-header h3 { font-size:14px; font-weight:500; }
+  .q-section-header p { font-size:12px; color:var(--text-mid); margin-top:2px; font-style:italic; }
+  .q-block { margin-bottom:22px; }
+  .q-label { font-size:14px; margin-bottom:11px; line-height:1.55; display:flex; gap:10px; align-items:flex-start; }
+  .q-num { display:inline-flex; flex-shrink:0; align-items:center; justify-content:center; background:var(--amazon-orange); color:white; border-radius:50%; width:22px; height:22px; font-size:11px; font-weight:600; margin-top:1px; }
+  .q-num.opt { background:#aaa; }
+  .reverse-tag { font-size:10px; background:#f0e0ff; color:#660088; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap; }
+  .opt-tag { font-size:10px; background:#e0f0e0; color:#006600; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap; }
+  .likert-anchors { display:flex; justify-content:space-between; font-size:11px; color:var(--text-light); margin-bottom:5px; }
+  .likert-options { display:flex; gap:5px; }
+  .likert-opt { flex:1; }
+  .likert-opt input { display:none; }
+  .likert-opt label { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; padding:8px 3px; border-radius:var(--radius); border:1px solid var(--border); background:#fafafa; transition:all 0.1s; font-size:11px; color:var(--text-mid); }
+  .likert-opt label:hover { background:#fff8ee; border-color:var(--amazon-orange); }
+  .likert-opt input:checked + label { background:var(--amazon-orange); color:white; border-color:#a66000; font-weight:600; }
+  .likert-val { font-size:15px; font-weight:500; }
+  .q-error { color:var(--danger); font-size:12px; margin-top:5px; display:none; }
+  .q-block.has-error .q-error { display:block; }
+  .q-block.has-error .likert-opt label { border-color:#ffaaaa; }
+  .q-block.has-error .likert-opt input:checked + label { border-color:#a66000; }
+  .q-textarea { width:100%; padding:10px; border:1px solid var(--border); border-radius:var(--radius); font-size:14px; font-family:var(--font-body); resize:vertical; min-height:80px; line-height:1.5; }
+  .q-textarea:focus { outline:2px solid var(--amazon-orange); border-color:transparent; }
+  .q-block.has-error .q-textarea { border-color:var(--danger); }
+  .submit-section { margin-top:32px; padding-top:24px; border-top:1px solid var(--border); }
+  .submit-btn { background:var(--amazon-yellow); border:1px solid var(--amazon-yellow-dark); color:var(--text-dark); padding:12px 40px; border-radius:20px; font-size:15px; cursor:pointer; font-family:var(--font-body); font-weight:500; }
+  .submit-btn:hover { background:#ddb347; }
+  .submit-note { font-size:12px; color:var(--text-light); margin-top:10px; }
+  .back-link { color:var(--amazon-link); cursor:pointer; font-size:14px; display:inline-block; margin-bottom:20px; }
+  .back-link:hover { text-decoration:underline; }
+
+  /* DEMOGRAPHICS */
+  .demo-wrap { max-width:820px; margin:20px auto; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:36px; }
+  .demo-wrap h2 { font-size:22px; font-weight:400; margin-bottom:8px; }
+  .demo-subtitle { color:var(--text-mid); font-size:14px; margin-bottom:28px; line-height:1.6; }
+  .demo-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .demo-block { margin-bottom:4px; }
+  .demo-block.full { grid-column:1/-1; }
+  .demo-label { font-size:14px; font-weight:500; margin-bottom:10px; display:flex; gap:8px; align-items:center; }
+  .demo-label .q-num { flex-shrink:0; }
+  .demo-options { display:flex; flex-direction:column; gap:6px; }
+  .demo-opt { display:flex; align-items:center; gap:10px; cursor:pointer; }
+  .demo-opt input[type=radio], .demo-opt input[type=checkbox] { accent-color:var(--amazon-orange); width:16px; height:16px; flex-shrink:0; }
+  .demo-opt span { font-size:14px; }
+  .demo-opt:hover span { color:var(--amazon-link); }
+  .demo-block.has-error .demo-label { color:var(--danger); }
+  .demo-block.has-error .demo-options { padding:8px; border:1px solid var(--danger); border-radius:var(--radius); background:#fff8f8; }
+  .demo-q-error { color:var(--danger); font-size:12px; margin-top:4px; display:none; }
+  .demo-block.has-error .demo-q-error { display:block; }
+
+  /* THANK YOU */
+  .thankyou-wrap { max-width:600px; margin:80px auto; text-align:center; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:60px 40px; }
+  .thankyou-icon { font-size:56px; margin-bottom:20px; }
+  .thankyou-wrap h2 { font-size:26px; font-weight:400; margin-bottom:12px; }
+  .thankyou-wrap p { color:var(--text-mid); font-size:15px; line-height:1.8; }
+
+  /* ADMIN */
+  .admin-login { max-width:380px; margin:60px auto; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:32px; }
+  .admin-login h2 { font-size:20px; margin-bottom:20px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; font-size:13px; font-weight:500; margin-bottom:6px; }
+  .form-group input { width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:var(--radius); font-size:14px; font-family:var(--font-body); }
+  .form-group input:focus { outline:2px solid var(--amazon-orange); border-color:transparent; }
+  .btn-login { width:100%; background:var(--amazon-yellow); border:1px solid var(--amazon-yellow-dark); padding:10px; border-radius:20px; font-size:14px; cursor:pointer; font-family:var(--font-body); font-weight:500; }
+  .btn-login:hover { background:#ddb347; }
+  .admin-error { color:var(--danger); font-size:13px; margin-top:8px; display:none; }
+  .admin-wrap { max-width:1100px; margin:30px auto; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:32px; }
+  .admin-wrap h2 { font-size:22px; margin-bottom:4px; }
+  .btn-download { background:var(--amazon-orange); color:white; border:none; padding:10px 22px; border-radius:20px; font-size:14px; cursor:pointer; font-family:var(--font-body); font-weight:500; }
+  .btn-download:hover { background:#e68900; }
+  .btn-logout { background:transparent; color:var(--text-mid); border:1px solid var(--border); padding:6px 14px; border-radius:20px; font-size:13px; cursor:pointer; font-family:var(--font-body); float:right; }
+  .site-footer { background:var(--amazon-dark); color:#ccc; padding:24px 16px; margin-top:40px; text-align:center; font-size:13px; }
+  .site-footer a { color:var(--amazon-orange); cursor:pointer; }
+  @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.shop-layout{grid-template-columns:1fr}.sidebar{display:none}.admin-stats{grid-template-columns:repeat(3,1fr)}.survey-wrap,.info-card,.certainty-wrap,.demo-wrap{padding:20px}.demo-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-main">
+    <div class="logo" onclick="goHome()">Aybee<span>.</span>de</div>
+    <div class="header-search">
+      <input type="text" placeholder="Suchen Sie nach Produkten...">
+      <button><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    </div>
+    <button class="cart-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <div><div style="font-size:10px;line-height:1">Einkaufs-</div><div>wagen</div></div>
+      <div class="cart-count">0</div>
+    </button>
+  </div>
+  <div class="header-sub">
+    <a onclick="goHome()">Alle Kategorien</a>
+    <a>Heute's Angebote</a>
+    <a>Kundenservice</a>
+    <a onclick="showAdminLogin()">Admin</a>
+  </div>
+</header>
+
+<!-- WELCOME -->
+<div id="page-welcome" class="page active">
+  <div class="container">
+    <div class="info-wrap">
+      <div class="info-card" style="text-align:center;">
+        <div class="info-logo">Aybee<span>.</span>de</div>
+        <h2 style="font-size:22px;margin-bottom:12px;">Willkommen zur Studie</h2>
+        <p style="color:var(--text-mid);font-size:15px;line-height:1.8;margin-bottom:28px;">Bevor Sie beginnen, lesen Sie bitte die folgenden Informationen sorgfältig durch.<br>Klicken Sie auf „Weiter", um zu starten.</p>
+        <button class="info-btn" onclick="startStudy()">Weiter →</button>
+        <div class="info-note">Ihre Teilnahme ist freiwillig und anonym.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO PAGE (per scenario) -->
+<div id="page-info" class="page">
+  <div class="container">
+    <div class="info-wrap">
+      <div class="info-card">
+        <div class="info-logo">Aybee<span>.</span>de</div>
+        <span class="info-badge" id="info-badge"></span>
+        <h2 id="info-title"></h2>
+        <div class="info-divider"></div>
+        <div class="info-body" id="info-body"></div>
+        <div><button class="info-btn" onclick="enterShop()">Zum Shop →</button></div>
+        <div class="info-note">Bitte lesen Sie den obigen Hinweis vollständig, bevor Sie fortfahren.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div id="page-shop" class="page">
+  <div class="container">
+    <div class="breadcrumb"><a onclick="goHome()">Home</a> › Bettdecken & Kissen › <span>Kopfkissen</span></div>
+    <div class="shop-layout">
+      <aside class="sidebar">
+        <h3>Filter</h3>
+        <div class="filter-section"><h4>Marke</h4>
+          <label><input type="checkbox"> allnatura</label><label><input type="checkbox"> BLACKROLL</label>
+          <label><input type="checkbox"> Coop Home Goods</label><label><input type="checkbox"> M LINE</label>
+          <label><input type="checkbox"> Royal Therapy</label><label><input type="checkbox"> sleepi</label>
+          <label><input type="checkbox"> TEMPUR</label>
+        </div>
+        <div class="filter-section"><h4>Bewertung</h4>
+          <label><input type="checkbox"> <span class="stars">★★★★</span> & up</label>
+          <label><input type="checkbox"> <span class="stars">★★★</span> & up</label>
+          <label><input type="checkbox"> <span class="stars">★★</span> & up</label>
+          <label><input type="checkbox"> <span class="stars">★</span> & up</label>
+        </div>
+        <div class="filter-section"><h4>Preis</h4>
+          <input type="range" class="price-range" min="0" max="250" value="200">
+          <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Zwischen: €79 und €200 (9)</div>
+        </div>
+        <div class="filter-section"><h4>Verkäufer</h4>
+          <label><input type="checkbox"> Amazon</label><label><input type="checkbox"> allnatura</label>
+          <label><input type="checkbox"> BLACKROLL®</label><label><input type="checkbox"> M line</label>
+          <label><input type="checkbox"> Sleepi GmbH</label>
+        </div>
+      </aside>
+      <main>
+        <div class="results-header">
+          <div class="results-count"><span>1–9</span> von <span>9</span> Ergebnissen für <strong>„Orthopädisches Kopfkissen"</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="color:var(--text-mid)">Sortieren nach:</span>
+            <select class="sort-select"><option>Relevanz</option><option>Preis: niedrig zu hoch</option><option>Preis: hoch zu niedrig</option><option>Beste Bewertung</option></select>
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--text-mid);margin-bottom:14px;">Weitere Kaufoptionen finden Sie auf der Produktseite.</div>
+        <div class="product-grid" id="product-grid"></div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div id="page-detail" class="page">
+  <div class="container">
+    <div class="breadcrumb"><a onclick="showPage('shop')">Home</a> › Kopfkissen › <span id="detail-breadcrumb"></span></div>
+    <div class="product-detail">
+      <div class="detail-grid">
+        <div>
+          <img id="detail-main-img" class="detail-main-img" src="" alt="Produktbild">
+          <div class="detail-thumbs" id="detail-thumbs"></div>
+        </div>
+        <div class="detail-info">
+          <span id="detail-brand" class="brand-link"></span>
+          <h1 id="detail-title"></h1>
+          <div class="detail-divider"></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span id="detail-stars" class="stars"></span>
+            <span id="detail-reviews" style="color:var(--amazon-link);font-size:14px;"></span>
+          </div>
+          <div class="detail-divider"></div>
+          <div style="margin:12px 0;">
+            <span style="font-size:13px;color:var(--text-mid)">Preis: </span>
+            <span id="detail-price" class="price-big"></span>
+            <div class="free-shipping">✓ Kostenlose Lieferung &nbsp; ✓ Kostenlose Rücksendung</div>
+          </div>
+          <div class="detail-divider"></div>
+          <div style="font-size:14px;font-weight:500;margin-bottom:8px;">Highlights:</div>
+          <ul class="feature-list" id="detail-features"></ul>
+        </div>
+        <div>
+          <div class="buy-box">
+            <div id="buy-price" class="buy-price"></div>
+            <div class="prime-line">✓ prime – Kostenloser Versand</div>
+            <div class="stock-ok">Auf Lager.</div>
+            <select class="qty-select"><option>Menge: 1</option><option>Menge: 2</option><option>Menge: 3</option></select>
+            <button class="btn-cart">In den Einkaufswagen</button>
+            <button class="btn-survey" id="btn-proceed" onclick="proceedFromDetail()">📝 Zur Umfrage fortfahren</button>
+            <div style="margin-top:12px;">
+              <div class="buy-box-row"><span>Lieferung</span><span>Morgen</span></div>
+              <div class="buy-box-row"><span>Versand durch</span><span>Amazon</span></div>
+              <div class="buy-box-row"><span>Verkäufer</span><span id="buy-seller"></span></div>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">Sicher bezahlen mit<br><span style="display:block;margin-top:4px;">💳 Visa &nbsp; Mastercard &nbsp; PayPal</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CERTAINTY SCALE (S2 only) -->
+<div id="page-certainty" class="page">
+  <div class="container">
+    <div class="certainty-wrap">
+      <span class="back-link" onclick="showPage('detail')">← Zurück zur Produktseite</span>
+      <span class="info-badge" style="background:#fef0e6;color:#aa4400;margin-bottom:16px;display:inline-block;">S2 – Certainty Scale</span>
+      <h2>Gewissheitsbewertung</h2>
+      <p class="certainty-subtitle">Bitte beantworten Sie die folgende Frage zu dem Produkt, das Sie ausgewählt haben.</p>
+      <div class="certainty-product-banner" id="certainty-product-banner"></div>
+      <div class="certainty-q">Bitte bewerten Sie: Wie sicher sind Sie, dass Sie diesen Betrag für das Produkt bezahlen würden?</div>
+      <div class="certainty-scale" id="certainty-scale"></div>
+      <div class="certainty-anchors" style="max-width:660px;"><span>1 – Sehr unsicher</span><span>10 – Sehr sicher</span></div>
+      <div class="certainty-error" id="certainty-error">Bitte wählen Sie einen Wert auf der Skala aus.</div>
+      <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);">
+        <button class="submit-btn" onclick="submitCertainty()">Weiter zur Umfrage →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SURVEY -->
+<div id="page-survey" class="page">
+  <div class="container">
+    <div class="survey-wrap">
+      <span class="back-link" id="survey-back-link" onclick="surveyBack()">← Zurück</span>
+      <h2>Umfrage zur Produktbewertung</h2>
+      <p class="survey-subtitle">Bitte beantworten Sie alle Pflichtfragen vollständig und ehrlich. Ihre Antworten sind anonym und werden ausschließlich für wissenschaftliche Zwecke verwendet.</p>
+      <div class="survey-progress"><div class="survey-progress-bar" id="survey-progress-bar" style="width:0%"></div></div>
+      <div id="survey-questions"></div>
+      <div class="submit-section">
+        <button class="submit-btn" onclick="submitSurvey()">Weiter zu demographischen Angaben →</button>
+        <div class="submit-note">* Alle Likert-Fragen und die erste Freitextfrage sind Pflichtfelder. Das letzte Feedback-Feld ist optional.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEMOGRAPHICS -->
+<div id="page-demographics" class="page">
+  <div class="container">
+    <div class="demo-wrap">
+      <h2>Demographische Angaben</h2>
+      <p class="demo-subtitle">Bitte beantworten Sie alle folgenden Fragen zu Ihrer Person. Die Angaben werden anonymisiert ausgewertet.</p>
+      <div class="demo-grid" id="demo-questions"></div>
+      <div class="submit-section" style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);">
+        <button class="submit-btn" onclick="submitDemographics()">Studie abschließen →</button>
+        <div class="submit-note">* Alle Felder sind Pflichtfelder.</div>
+        <div id="demo-send-error" style="display:none;margin-top:10px;color:var(--danger);font-size:13px;">⚠️ Übermittlung fehlgeschlagen. Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THANK YOU -->
+<div id="page-thankyou" class="page">
+  <div class="container">
+    <div class="thankyou-wrap">
+      <div class="thankyou-icon">✅</div>
+      <h2>Vielen Dank für Ihre Teilnahme!</h2>
+      <p>Ihre Antworten wurden erfolgreich gespeichert.<br><br>Die Umfrage ist nun abgeschlossen.<br>Sie können dieses Fenster schließen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="page-admin-login" class="page">
+  <div class="container">
+    <div class="admin-login">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div class="logo" style="font-size:22px;cursor:default;color:var(--text-dark);">Aybee<span style="color:var(--amazon-orange)">.</span>de</div>
+        <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Admin-Bereich</div>
+      </div>
+      <h2>Anmelden</h2>
+      <div class="form-group"><label>Benutzername</label><input type="text" id="admin-user" placeholder="admin" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <div class="form-group"><label>Passwort</label><input type="password" id="admin-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <button class="btn-login" onclick="adminLogin()">Anmelden</button>
+      <div class="admin-error" id="admin-error">Falscher Benutzername oder Passwort.</div>
+      <div style="margin-top:16px;text-align:center;font-size:13px;"><a onclick="goHome()" style="color:var(--amazon-link);cursor:pointer;">← Zurück zum Shop</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="page-admin" class="page">
+  <div class="container">
+    <div class="admin-wrap" style="max-width:700px;">
+      <button class="btn-logout" onclick="adminLogout()">Abmelden</button>
+      <h2>Studien-Dashboard</h2>
+      <p style="color:var(--text-mid);font-size:14px;margin:8px 0 28px;">Alle Antworten werden direkt in Ihrem Google Sheet gespeichert. Öffnen Sie es über den Button unten.</p>
+
+      <div style="background:#f0fff4;border:1px solid #81C784;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">
+        <div style="font-size:15px;font-weight:500;margin-bottom:8px;">📊 Daten öffnen</div>
+        <p style="font-size:14px;color:var(--text-mid);margin-bottom:16px;">Alle eingegangenen Antworten befinden sich in Ihrem Google Sheet. Von dort können Sie die Daten als CSV oder Excel exportieren.</p>
+        <button class="btn-download" onclick="window.open(SHEET_URL,'_blank')">Google Sheet öffnen ↗</button>
+      </div>
+
+      <div style="background:#f8f8f8;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;">
+        <div style="font-size:14px;font-weight:500;margin-bottom:10px;">CSV-Export aus Google Sheets</div>
+        <ol style="font-size:13px;color:var(--text-mid);line-height:2;padding-left:18px;">
+          <li>Google Sheet öffnen (Button oben)</li>
+          <li>Menü: <strong>Datei → Herunterladen → CSV</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">© 2025 Aybee.de – Wissenschaftliche Studie &nbsp;|&nbsp; <a onclick="showAdminLogin()">Admin</a></footer>
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIG  ← edit these two lines before deploying
+// ══════════════════════════════════════════════
+const ADMIN_USER = 'admin', ADMIN_PASS = 'studie2025';
+
+// Paste your Google Apps Script Web App URL here:
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwB7A5PdG1ALDAMPUNJJVQWmsuKee9LOwzpca3lze8pG2xNtPSDEio3cKzCx8pTiB0/exec';
+
+// Paste your Google Sheet URL here (for the admin link):
+const SHEET_URL  = 'https://docs.google.com/spreadsheets/d/1y-NUaU7ZXDDT_-QF3CIU9Qsf8PuNOypZXGkzKcaq4hA/edit?gid=0#gid=0';
+
+// ══════════════════════════════════════════════
+// SCENARIOS
+// ══════════════════════════════════════════════
+const scenarios = {
+  0: { name:'Control', badgeText:'S0 – Control', badgeBg:'#f0f0f0', badgeColor:'#444',
+    infoTitle:'Hinweis vor dem Einkauf',
+    infoText:`Nimm dir Zeit, bevor du eine Entscheidung triffst und schaue dir im Detail die Produktseiten an. Bitte verhalte dich in dieser Simulation eines Marktplatzes so, wie du es auch bei einem regulären Einkauf auf Amazon tun würdest. Wähle nur das Produkt aus, das du auch im echten Leben kaufen würdest. Kein echtes Geld erforderlich: In dieser Simulation ist kein echtes Geld involviert. Du kannst das Produkt in deinen Warenkorb legen und den Kauf abschließen, ohne dafür zu bezahlen.`,
+    specificQs:[] },
+  1: { name:'Cheap Talk', badgeText:'S1 – Cheap Talk', badgeBg:'#e8f4fd', badgeColor:'#0066aa',
+    infoTitle:'Wichtiger Hinweis zur Befragung',
+    infoText:`Bitte berücksichtigen Sie diese Informationen, wenn Sie die folgenden Fragen beantworten. Die Produkte, die Sie sehen werden, sind echte Produkte, die zum Kauf angeboten werden. Da es sich jedoch um ein Forschungsprojekt handelt, bitten wir Sie nicht, einen tatsächlichen Kauf zu tätigen. Dennoch möchten wir Sie bitten, die folgende Frage so zu beantworten, als handele es sich um eine tatsächliche Kaufaufforderung. Studien haben gezeigt, dass es für viele Menschen schwierig ist, eine Frage zu einem hypothetischen Kauf so zu beantworten, als handele es sich um einen tatsächlichen Kauf. Wir stellen immer wieder fest, dass mehr Personen sagen, dass sie in einer hypothetischen Situation einen Kauf tätigen würden, als wenn die Situation real ist. Ein Grund dafür ist unserer Meinung nach, dass die Befragten bei einem hypothetischen Kauf denken könnten: „Klar, ich kaufe das, das verschlechtert meine Situation nicht." Wenn die Entscheidung jedoch mit einem tatsächlichen Kauf verbunden ist, denken die Befragten möglicherweise: „Möchte ich wirklich mein Geld für dieses Produkt ausgeben?" Wir bitten Sie, dieses Problem zu vermeiden und die folgende Frage so zu beantworten, als wäre es eine tatsächliche Kaufanfrage.`,
+    specificQs:[
+      {text:'Ich habe sorgfältig über das ursprünglich erläuterte Konzept nachgedacht.',req:true},
+      {text:'Die Erläuterung der hypothetischen Verzerrung hat meine Bewertung der Produkte beeinflusst.',req:true}
+    ]},
+  2: { name:'Certainty Scale', badgeText:'S2 – Certainty Scale', badgeBg:'#fef0e6', badgeColor:'#aa4400',
+    infoTitle:'Hinweis vor dem Einkauf',
+    infoText:`Nimm dir Zeit, bevor du eine Entscheidung triffst und schaue dir im Detail die Produktseiten an. Bitte verhalte dich in dieser Simulation eines Marktplatzes so, wie du es auch bei einem regulären Einkauf auf Amazon tun würdest. Wähle nur das Produkt aus, das du auch im echten Leben kaufen würdest. Kein echtes Geld erforderlich: In dieser Simulation ist kein echtes Geld involviert. Du kannst das Produkt in deinen Warenkorb legen und den Kauf abschließen, ohne dafür zu bezahlen.`,
+    specificQs:[
+      {text:'Die Gewissheitsskala hat mich dazu veranlasst, meine Wahl zu überdenken.',req:true},
+      {text:'Die Beantwortung der Gewissheitsskala hat meine Bewertung der Produkte beeinflusst.',req:true},
+      {text:'Ich habe das Bedürfnis, mir meiner Entscheidung sicherer zu sein.',req:true}
+    ]},
+  3: { name:'Budget Reminder', badgeText:'S3 – Budget Reminder', badgeBg:'#e9f7e9', badgeColor:'#006600',
+    infoTitle:'Budgethinweis',
+    infoText:`Bitte berücksichtigen Sie Ihr Budget und was Sie sich leisten können. Vergessen Sie nicht, dass dieses Geld aus Ihrem Budget entnommen wird! Sie haben dann am Monatsende weniger Geld für Konsum und Ersparnisse zur Verfügung!\n\nIhr Budget: €200,00`,
+    specificQs:[
+      {text:'Ich habe sorgfältig über die Budgetbeschränkungen nachgedacht.',req:true},
+      {text:'Die Erinnerung an meine Budgetbeschränkungen hat meine Bewertung der Produkte beeinflusst.',req:true}
+    ]},
+  4: { name:'Payment Consequentiality', badgeText:'S4 – Payment Consequentiality', badgeBg:'#f5e8f5', badgeColor:'#660066',
+    infoTitle:'Wichtige Information zur Verlosung',
+    infoText:`Durch die Auswahl eines Produkts nehmen Sie als Teilnehmer an einer Verlosung teil. Falls Sie zufällig ausgewählt werden, müssen Sie das Produkt zum angegebenen Preis in einer echten Transaktion mit Ihrem eigenen Geld kaufen.`,
+    specificQs:[
+      {text:'Ich habe sorgfältig über die ursprünglich erläuterten Konsequenzen nachgedacht.',req:true},
+      {text:'Die Erklärung, dass ich das Produkt möglicherweise tatsächlich kaufen muss, hat meine Bewertung der Produkte beeinflusst.',req:true}
+    ]}
+};
+
+// ══════════════════════════════════════════════
+// COMMON SURVEY QUESTIONS
+// ══════════════════════════════════════════════
+const commonQs = [
+  {section:'Soziale Erwünschtheit & Selbstbild', note:'Reduced warm-glow / social desirability & positive self-image'},
+  {text:'Ich hatte das Gefühl, dass meine Entscheidungsfähigkeit beobachtet wurde.',req:true},
+  {text:'Ich fühlte mich aufgrund sozialer Erwartungen unter Druck gesetzt.',req:true},
+  {text:'Ich denke normalerweise sorgfältig über meine Entscheidungen nach, wenn ich Produkte kaufe.',req:true},
+  {text:'Ich wollte gute Entscheidungen treffen.',req:true},
+  {section:'Vertrautheit & Kontextnähe', note:'Familiarity & context tangibility'},
+  {text:'Ich nutze häufig E-Commerce Shopping-Plattformen.',req:true},
+  {text:'Ich bin mit dieser Produktkategorie vertraut.',req:true},
+  {text:'Ich bin mit diesen spezifischen Produkten vertraut.',req:true},
+  {text:'Ich habe diese oder ähnliche Produkte bereits gekauft.',req:true},
+  {text:'Ich interessiere mich für diese Produkte.',req:true},
+  {section:'Konsequentialität & Budgetbeschränkungen', note:'Consequentiality & budget constraints'},
+  {text:'Ich denke normalerweise sorgfältig über den Preis eines Produkts nach.',req:true},
+  {text:'Ich beabsichtige / plane, das von mir ausgewählte Produkt zu kaufen.',req:true},
+  {text:'Ich hatte das Gefühl, dass diese Simulation einer echten Einkaufssituation ähnlich war.',req:true},
+  {text:'Ich habe darüber nachgedacht, wie ich mich in einer echten Kaufsituation verhalten würde.',req:true},
+  {text:'Ich habe mir vorgestellt, das Produkt tatsächlich zu erhalten.',req:true},
+  {section:'Kontrollvariablen', note:'Control'},
+  {text:'Meine Fähigkeiten wurden herausgefordert.',req:true},
+  {text:'Mein Status wurde herausgefordert.',req:true},
+  {text:'Ich habe meine Entscheidungen schnell und ohne lange nachzudenken getroffen.',req:true,reverse:true},
+  {text:'Ich habe mir Zeit genommen, bevor ich mich entschieden habe.',req:true},
+  {section:'Abschluss', note:'Comprehension & open feedback'},
+  {text:'Ich habe alle Fragen und Anweisungen verstanden.',req:true},
+  {text:'Bitte beschreiben Sie kurz Ihre allgemeine Wahrnehmung der Interaktion mit der Umfrage.',req:true,type:'text',placeholder:'Ihre Antwort hier...'},
+  {text:'Optional: Ihre Chance, uns Feedback zu geben. Möchten Sie etwas erwähnen oder anmerken?',req:false,type:'text',optional:true,placeholder:'Optional – Ihr Feedback...'}
+];
+
+// ══════════════════════════════════════════════
+// DEMOGRAPHICS
+// ══════════════════════════════════════════════
+const demoFields = [
+  { key:'demo_gender', label:'Geschlecht', type:'radio', options:['Weiblich','Männlich'] },
+  { key:'demo_age', label:'Alter', type:'radio', options:['18–24','25–34','35–44','45–54','55–65'] },
+  { key:'demo_education', label:'Bildungsabschluss', type:'radio', options:['Kein Schulabschluss','Hauptschulabschluss / mittlere Reife','Abitur / Fachabitur','Bachelor-Abschluss','Master / Promotion','Berufsausbildung','Keine Angabe'], full:true },
+  { key:'demo_employment', label:'Beschäftigungsstatus', type:'radio', options:['Vollzeitbeschäftigt','Teilzeitbeschäftigt','Selbstständig / Unternehmer','Im Ruhestand','Student/in','Arbeitssuchend','Keine Angabe'], full:true },
+  { key:'demo_relationship', label:'Beziehungsstatus', type:'radio', options:['Ledig','Verheiratet','Geschieden','Verwitwet'] },
+  { key:'demo_housing', label:'Wohnsituation', type:'radio', options:['Eigentümer/in','Mieter/in (privat oder sozial)','Bei den Eltern wohnend','Wohngemeinschaft','Keine Angabe'], full:true },
+  { key:'demo_household', label:'Personen im Haushalt', type:'radio', options:['1','2','3–4','5–6','6+'] },
+  { key:'demo_income', label:'Haushaltseinkommen (brutto/Jahr)', type:'radio', options:['< 50.000 €','50.000 – 74.999 €','75.000 – 99.999 €','100.000 – 124.999 €','125.000 – 149.999 €','150.000 – 174.999 €','175.000 – 199.999 €','200.000 – 249.999 €','250.000 € +','Keine Angabe'], full:true },
+  { key:'demo_prime', label:'Amazon Prime Mitglied?', type:'radio', options:['Ja','Nein'] },
+  { key:'demo_purchasing', label:'Einkaufsverhalten', type:'radio', options:['Online','Sowohl online als auch offline'] },
+  { key:'demo_device', label:'Aktuelles Gerät', type:'radio', options:['Smartphone / Mobilgerät','Desktop / Laptop'] }
+];
+
+// ══════════════════════════════════════════════
+// PRODUCTS
+// ══════════════════════════════════════════════
+const products = [
+  {id:1,name:'TEMPUR Sonata Kopfkissen Memory Foam – Ergonomisches Schlafkissen für Seiten- & Rückenschläfer',brand:'TEMPUR',price:'108,00',rating:4.3,reviews:862,prime:true,img:'https://m.media-amazon.com/images/I/61TH8Q4gqnL._AC_SL1500_.jpg',features:['Memory-Foam-Technologie für individuelle Anpassung','Ergonomische Form für Nacken- & Schulterentlastung','Waschbarer Bezug (60 °C)','Größe: 50 × 30 cm','10 Jahre Garantie'],seller:'TEMPUR GmbH'},
+  {id:2,name:'sleepi® Comfort | Orthopädisches Kopfkissen – zertifiziertes Nackenstützkissen',brand:'sleepi',price:'99,00',rating:4.1,reviews:305,prime:false,img:'https://m.media-amazon.com/images/I/61qMTyG3-gL._AC_SL1500_.jpg',features:['Orthopädisch geformt für optimale Nackenstütze','Klimaregulierende Oberflächenstruktur','OEKO-TEX® Standard 100 zertifiziert','Geeignet für alle Schlafpositionen','Maße: 60 × 40 cm'],seller:'Sleepi GmbH'},
+  {id:3,name:'M LINE | Athletic Pillow | Kopfkissen – Nackenstütze für Sportler',brand:'M LINE',price:'129,00',rating:4.4,reviews:402,prime:true,img:'https://m.media-amazon.com/images/I/71YMj9vFv-L._AC_SL1500_.jpg',features:['Speziell für Sportler entwickelt','Memory-Schaum mit kühlender Gel-Schicht','Antibakteriell und hypoallergen','Zertifiziert: Deutsche Handwerkskunst','2 Jahre Garantie'],seller:'M line'},
+  {id:4,name:'Coop Home Goods Eden Cool – verstellbares Kissen mit Kühleffekt',brand:'Coop Home Goods',price:'177,00',rating:4.5,reviews:4862,prime:true,img:'https://m.media-amazon.com/images/I/61rg0rHH+cL._AC_SL1500_.jpg',features:['Verstellbare Füllung – individuelle Höhenanpassung','Kühlender Lilly Silk® Bezug','Hypoallergen & maschinenwaschbar','Vom Schlaftherapeuten empfohlen','Maße: 65 × 40 cm'],seller:'Coop Home Goods'},
+  {id:5,name:'Royal Therapy King Memory Foam Kissen – Ergonomisches Bambus-Kopfkissen mit 3-Schicht-Technologie',brand:'Royal Therapy',price:'193,00',rating:4.4,reviews:2044,prime:false,img:'https://m.media-amazon.com/images/I/71cqe3bfHnL._AC_SL1500_.jpg',features:['3-Schicht Memory Foam','Bamboo-Bezug – natürlich & atmungsaktiv','King-Size: 90 × 50 cm','Beidseitig nutzbar: weich / mittelfest','Inkl. Tragetasche'],seller:'Royal Therapy'},
+  {id:6,name:'BLACKROLL® Recovery Pillow (50 × 30 cm) – Kopfkissen für aktive Regeneration',brand:'BLACKROLL',price:'112,78',rating:4.3,reviews:4740,prime:true,img:'https://m.media-amazon.com/images/I/61ufGo7AAKL._AC_SL1500_.jpg',features:['Von Sportmedizinern entwickelt','Unterstützt aktive Erholung','Waschbarer Bezug mit Reißverschluss','Ideal für Seiten- und Bauchschläfer','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
+  {id:7,name:'allnatura Orthopädisches Naturlatex-Kopfkissen – ökologisches Nackenstützkissen (bio-zertifiziert)',brand:'allnatura',price:'123,00',rating:3.4,reviews:5,prime:true,img:'https://m.media-amazon.com/images/I/61i0ARSPniL._AC_SL1500_.jpg',features:['100% Naturlatex aus nachhaltigem Anbau','GOLS-zertifiziert','Stufenlos anpassbare Höhe','Langlebig: bis zu 20 Jahre','Produziert in Deutschland'],seller:'allnatura'},
+  {id:8,name:'BLACKROLL® Recovery Pillow PLUS (60 x 40 cm) – Ergonomisches Kopfkissen, höhenverstellbar',brand:'BLACKROLL',price:'199,99',rating:4.3,reviews:1255,prime:false,img:'https://m.media-amazon.com/images/I/71k5V5p7UUL._AC_SL1500_.jpg',features:['Höhenverstellbar durch herausnehmbares Innenkissen','Ergonomische Form für Seiten- & Rückenschläfer','Von Sportmedizinern entwickelt','Maße: 60 × 40 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
+  {id:9,name:'BLACKROLL® Recovery Pillow KIDS (50 x 30 cm) – Ergonomisches Kopfkissen für Kinder',brand:'BLACKROLL',price:'79,90',rating:4.3,reviews:1255,prime:false,img:'https://m.media-amazon.com/images/I/71w5p9XBHZL._AC_SL1500_.jpg',features:['Speziell für Kinder entwickelt (3–12 Jahre)','Ergonomische Stützform für gesundes Wachstum','Waschbarer Bezug mit Reißverschluss','Maße: 50 × 30 × 6 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'}
+];
+
+// ══════════════════════════════════════════════
+// STATE  — scenario assigned ONCE on page load
+// ══════════════════════════════════════════════
+let currentScenario = null;
+let participantId = null;
+let currentProduct = null;
+let surveyAnswers = {};       // stored temporarily between survey → demographics
+let certaintyAnswer = null;   // S2 certainty scale value
+
+// ── send one row to Google Sheets via Apps Script ──
+async function sendToSheets(entry) {
+  const resp = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode:   'no-cors',          // Apps Script returns opaque; we can't read body, but write succeeds
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(entry)
+  });
+  return resp; // opaque with no-cors — treat as success if no throw
+}
+
+// ── nav ──
+function showPage(n){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById('page-'+n).classList.add('active'); window.scrollTo(0,0); }
+function goHome(){ showPage(currentScenario!==null ? 'shop' : 'welcome'); }
+function showAdminLogin(){ document.getElementById('admin-user').value=''; document.getElementById('admin-pass').value=''; document.getElementById('admin-error').style.display='none'; showPage('admin-login'); }
+
+// ── STEP 1: assign scenario, show info ──
+function startStudy(){
+  currentScenario = Math.floor(Math.random()*5);
+  participantId = 'P'+Date.now()+'_'+Math.random().toString(36).substr(2,6).toUpperCase();
+  certaintyAnswer = null;
+  surveyAnswers = {};
+
+  const sc = scenarios[currentScenario];
+  const badge = document.getElementById('info-badge');
+  badge.textContent = sc.badgeText;
+  badge.style.background = sc.badgeBg;
+  badge.style.color = sc.badgeColor;
+  document.getElementById('info-title').textContent = sc.infoTitle;
+  document.getElementById('info-body').textContent = sc.infoText;
+  showPage('info');
+}
+
+// ── STEP 2: enter shop ──
+function enterShop(){ renderProducts(); showPage('shop'); }
+
+function starsOf(r){ return [1,2,3,4,5].map(i=>i<=Math.round(r)?'★':'☆').join(''); }
+
+function renderProducts(){
+  document.getElementById('product-grid').innerHTML = products.map(p=>`
+    <div class="product-card" onclick="openProduct(${p.id})">
+      <img class="product-img" src="${p.img}" alt="${p.brand}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23f0f0f0%22/><text x=%22100%22 y=%22115%22 text-anchor=%22middle%22 font-size=%2250%22>🛏</text></svg>'">
+      <div class="product-brand">${p.brand}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-rating"><span class="stars">${starsOf(p.rating)}</span><span class="review-count">${p.reviews.toLocaleString('de')}</span></div>
+      <div class="product-price"><sup style="font-size:11px;vertical-align:top;margin-top:3px">€</sup>${p.price}</div>
+      ${p.prime?'<div style="color:#00A8E1;font-size:12px;font-weight:600;margin-bottom:4px">✓ prime</div>':''}
+      <button class="add-cart-btn" onclick="event.stopPropagation()">In den Einkaufswagen</button>
+    </div>`).join('');
+}
+
+// ── STEP 3: product detail ──
+function openProduct(id){
+  currentProduct = products.find(p=>p.id===id);
+  document.getElementById('detail-breadcrumb').textContent = currentProduct.brand;
+  document.getElementById('detail-brand').textContent = '⬡ Marke: '+currentProduct.brand;
+  document.getElementById('detail-title').textContent = currentProduct.name;
+  document.getElementById('detail-main-img').src = currentProduct.img;
+  document.getElementById('detail-stars').textContent = starsOf(currentProduct.rating);
+  document.getElementById('detail-reviews').textContent = currentProduct.reviews.toLocaleString('de')+' Bewertungen';
+  document.getElementById('detail-price').innerHTML = '<sup style="font-size:16px;vertical-align:top;margin-top:4px">€</sup>'+currentProduct.price;
+  document.getElementById('buy-price').innerHTML = '<sup style="font-size:13px;vertical-align:top;margin-top:3px">€</sup>'+currentProduct.price;
+  document.getElementById('buy-seller').textContent = currentProduct.seller;
+  document.getElementById('detail-features').innerHTML = currentProduct.features.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById('detail-thumbs').innerHTML = `<img class="detail-thumb active" src="${currentProduct.img}" alt="thumb" onclick="document.getElementById('detail-main-img').src=this.src">`;
+  showPage('detail');
+}
+
+// ── STEP 4: proceed from detail  (S2 → certainty page, others → survey) ──
+function proceedFromDetail(){
+  if(currentScenario===2){
+    buildCertaintyPage();
+    showPage('certainty');
+  } else {
+    buildSurvey();
+    showPage('survey');
+  }
+}
+
+// ── STEP 4a (S2 only): certainty scale ──
+function buildCertaintyPage(){
+  // product banner
+  document.getElementById('certainty-product-banner').innerHTML = `
+    <img src="${currentProduct.img}" alt="${currentProduct.brand}" onerror="this.style.display='none'">
+    <div>
+      <div class="cp-name">${currentProduct.name}</div>
+      <div class="cp-price"><sup style="font-size:12px;vertical-align:top;margin-top:2px">€</sup>${currentProduct.price}</div>
+    </div>`;
+
+  // scale 1-10
+  const scaleEl = document.getElementById('certainty-scale');
+  const labels = {1:'Sehr unsicher',10:'Sehr sicher'};
+  scaleEl.innerHTML = [1,2,3,4,5,6,7,8,9,10].map(v=>`
+    <div class="certainty-opt">
+      <input type="radio" name="certainty" id="cs_${v}" value="${v}">
+      <label for="cs_${v}">
+        <span class="certainty-val">${v}</span>
+        <span class="certainty-desc">${labels[v]||''}</span>
+      </label>
+    </div>`).join('');
+
+  document.getElementById('certainty-error').style.display='none';
+}
+
+function submitCertainty(){
+  const checked = document.querySelector('input[name="certainty"]:checked');
+  if(!checked){ document.getElementById('certainty-error').style.display='block'; return; }
+  certaintyAnswer = parseInt(checked.value);
+  buildSurvey();
+  showPage('survey');
+}
+
+// ── STEP 5: survey ──
+function buildSurvey(){
+  const sc = scenarios[currentScenario];
+  const allItems = [...sc.specificQs, ...commonQs];
+  let html='', qIdx=0;
+
+  allItems.forEach(item=>{
+    if(item.section){ html+=`<div class="q-section-header"><h3>${item.section}</h3><p>${item.note}</p></div>`; return; }
+    const i=qIdx++;
+    const isText=item.type==='text';
+    const revTag=item.reverse?'<span class="reverse-tag">reverse item</span>':'';
+    const optTag=item.optional?'<span class="opt-tag">optional</span>':'';
+    if(isText){
+      html+=`<div class="q-block" id="qblock-${i}" data-req="${item.req?1:0}" data-type="text">
+        <div class="q-label"><span class="q-num${item.optional?' opt':''}">${i+1}</span><span>${item.text}${optTag}</span></div>
+        <textarea class="q-textarea" name="q${i}" id="q${i}_t" placeholder="${item.placeholder||''}"></textarea>
+        <div class="q-error">Bitte geben Sie eine Antwort ein.</div></div>`;
+    } else {
+      const opts=[1,2,3,4,5,6,7].map(v=>`<div class="likert-opt"><input type="radio" name="q${i}" id="q${i}_${v}" value="${v}"><label for="q${i}_${v}"><span class="likert-val">${v}</span></label></div>`).join('');
+      html+=`<div class="q-block" id="qblock-${i}" data-req="1" data-type="likert">
+        <div class="q-label"><span class="q-num">${i+1}</span><span>${item.text}${revTag}</span></div>
+        <div class="likert-anchors"><span>Stimme überhaupt nicht zu</span><span>Stimme voll zu</span></div>
+        <div class="likert-options">${opts}</div>
+        <div class="q-error">Bitte wählen Sie eine Antwort aus.</div></div>`;
+    }
+  });
+
+  document.getElementById('survey-questions').innerHTML = html;
+  document.querySelectorAll('#survey-questions input[type=radio],#survey-questions textarea').forEach(el=>{
+    el.addEventListener('change',updateProg); el.addEventListener('input',updateProg);
+  });
+  window._reqTotal = document.querySelectorAll('.q-block[data-req="1"]').length;
+  updateProg();
+}
+
+function surveyBack(){
+  if(currentScenario===2) showPage('certainty');
+  else showPage('detail');
+}
+
+function updateProg(){
+  let n=0;
+  document.querySelectorAll('.q-block[data-req="1"]').forEach(b=>{
+    const i=b.id.replace('qblock-','');
+    if(b.dataset.type==='likert'&&document.querySelector(`input[name="q${i}"]:checked`)) n++;
+    if(b.dataset.type==='text'){ const t=document.getElementById(`q${i}_t`); if(t&&t.value.trim()) n++; }
+  });
+  document.getElementById('survey-progress-bar').style.width=(window._reqTotal>0?n/window._reqTotal*100:0)+'%';
+}
+
+// ── STEP 6: submit survey → go to demographics ──
+function submitSurvey(){
+  const sc = scenarios[currentScenario];
+  const allItems = [...sc.specificQs, ...commonQs];
+  let ok=true, firstErr=null, answers={}, qIdx=0;
+
+  allItems.forEach(item=>{
+    if(item.section) return;
+    const i=qIdx++, block=document.getElementById('qblock-'+i);
+    block.classList.remove('has-error');
+    if(item.type==='text'){
+      const v=(document.getElementById(`q${i}_t`)||{}).value||'';
+      if(item.req&&!v.trim()){ block.classList.add('has-error'); ok=false; if(!firstErr)firstErr=block; }
+      else answers['F'+(i+1)+'_text']=v.trim();
+    } else {
+      const c=document.querySelector(`input[name="q${i}"]:checked`);
+      if(!c){ block.classList.add('has-error'); ok=false; if(!firstErr)firstErr=block; }
+      else answers['F'+(i+1)]=parseInt(c.value);
+    }
+  });
+
+  if(!ok){ firstErr.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  surveyAnswers = answers;
+  buildDemographics();
+  showPage('demographics');
+}
+
+// ── STEP 7: demographics ──
+function buildDemographics(){
+  let html='';
+  demoFields.forEach((f,di)=>{
+    const fullClass = f.full ? ' full' : '';
+    const opts = f.options.map(o=>`
+      <label class="demo-opt">
+        <input type="radio" name="${f.key}" value="${o}">
+        <span>${o}</span>
+      </label>`).join('');
+    html+=`<div class="demo-block${fullClass}" id="dblock-${di}">
+      <div class="demo-label"><span class="q-num">${di+1}</span>${f.label}</div>
+      <div class="demo-options">${opts}</div>
+      <div class="demo-q-error">Bitte wählen Sie eine Option aus.</div>
+    </div>`;
+  });
+  document.getElementById('demo-questions').innerHTML = html;
+}
+
+// ── STEP 8: submit demographics → POST to Google Sheets → thank you ──
+async function submitDemographics(){
+  const demoData = {};
+  let ok = true, firstErr = null;
+
+  demoFields.forEach((f, di) => {
+    const block = document.getElementById('dblock-'+di);
+    const checked = document.querySelector(`input[name="${f.key}"]:checked`);
+    block.classList.remove('has-error');
+    if(!checked){
+      block.classList.add('has-error');
+      ok = false;
+      if(!firstErr) firstErr = block;
+    } else {
+      demoData[f.key] = checked.value;
+    }
+  });
+
+  if(!ok){ firstErr.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+
+  const entry = {
+    id: participantId,
+    timestamp: new Date().toISOString().replace('T',' ').substr(0,19),
+    szenario: currentScenario,
+    szenario_name: scenarios[currentScenario].name,
+    produkt_id: currentProduct.id,
+    produkt_marke: currentProduct.brand,
+    produkt_preis: currentProduct.price,
+    ...(certaintyAnswer!==null ? {certainty_scale: certaintyAnswer} : {}),
+    ...surveyAnswers,
+    ...demoData
+  };
+
+  // Show sending state
+  const btn = document.querySelector('#page-demographics .submit-btn');
+  btn.textContent = 'Wird übermittelt …';
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+
+  try {
+    await sendToSheets(entry);
+    showPage('thankyou');
+  } catch(err) {
+    btn.textContent = 'Studie abschließen →';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    document.getElementById('demo-send-error').style.display = 'block';
+    console.error('Sheets error:', err);
+  }
+}
+
+// ══════════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════════
+function adminLogin(){
+  if(document.getElementById('admin-user').value.trim()===ADMIN_USER &&
+     document.getElementById('admin-pass').value===ADMIN_PASS){
+    document.getElementById('admin-error').style.display='none';
+    showPage('admin');
+  } else {
+    document.getElementById('admin-error').style.display='block';
+  }
+}
+function adminLogout(){ showPage('welcome'); }
+</script>
+</body>
+</html>
