@@ -439,30 +439,30 @@ const scenarios = {
     infoTitle:'Wichtiger Hinweis zur Befragung',
     infoText:`Bitte berücksichtigen Sie diese Informationen, wenn Sie die folgenden Fragen beantworten. Die Produkte, die Sie sehen werden, sind echte Produkte, die zum Kauf angeboten werden. Da es sich jedoch um ein Forschungsprojekt handelt, bitten wir Sie nicht, einen tatsächlichen Kauf zu tätigen. Dennoch möchten wir Sie bitten, die folgende Frage so zu beantworten, als handele es sich um eine tatsächliche Kaufaufforderung. Studien haben gezeigt, dass es für viele Menschen schwierig ist, eine Frage zu einem hypothetischen Kauf so zu beantworten, als handele es sich um einen tatsächlichen Kauf. Wir stellen immer wieder fest, dass mehr Personen sagen, dass sie in einer hypothetischen Situation einen Kauf tätigen würden, als wenn die Situation real ist. Ein Grund dafür ist unserer Meinung nach, dass die Befragten bei einem hypothetischen Kauf denken könnten: „Klar, ich kaufe das, das verschlechtert meine Situation nicht." Wenn die Entscheidung jedoch mit einem tatsächlichen Kauf verbunden ist, denken die Befragten möglicherweise: „Möchte ich wirklich mein Geld für dieses Produkt ausgeben?" Wir bitten Sie, dieses Problem zu vermeiden und die folgende Frage so zu beantworten, als wäre es eine tatsächliche Kaufanfrage.`,
     specificQs:[
-      {text:'Ich habe sorgfältig über das ursprünglich erläuterte Konzept nachgedacht.',req:true},
-      {text:'Die Erläuterung der hypothetischen Verzerrung hat meine Bewertung der Produkte beeinflusst.',req:true}
+      {csvKey:'s1_q1', text:'Ich habe sorgfältig über das ursprünglich erläuterte Konzept nachgedacht.',req:true},
+      {csvKey:'s1_q2', text:'Die Erläuterung der hypothetischen Verzerrung hat meine Bewertung der Produkte beeinflusst.',req:true}
     ]},
   2: { name:'Certainty Scale', badgeText:'S2 – Certainty Scale', badgeBg:'#fef0e6', badgeColor:'#aa4400',
     infoTitle:'Hinweis vor dem Einkauf',
     infoText:`Nimm dir Zeit, bevor du eine Entscheidung triffst und schaue dir im Detail die Produktseiten an. Bitte verhalte dich in dieser Simulation eines Marktplatzes so, wie du es auch bei einem regulären Einkauf auf Amazon tun würdest. Wähle nur das Produkt aus, das du auch im echten Leben kaufen würdest. Kein echtes Geld erforderlich: In dieser Simulation ist kein echtes Geld involviert. Du kannst das Produkt in deinen Warenkorb legen und den Kauf abschließen, ohne dafür zu bezahlen.`,
     specificQs:[
-      {text:'Die Gewissheitsskala hat mich dazu veranlasst, meine Wahl zu überdenken.',req:true},
-      {text:'Die Beantwortung der Gewissheitsskala hat meine Bewertung der Produkte beeinflusst.',req:true},
-      {text:'Ich habe das Bedürfnis, mir meiner Entscheidung sicherer zu sein.',req:true}
+      {csvKey:'s2_q1', text:'Die Gewissheitsskala hat mich dazu veranlasst, meine Wahl zu überdenken.',req:true},
+      {csvKey:'s2_q2', text:'Die Beantwortung der Gewissheitsskala hat meine Bewertung der Produkte beeinflusst.',req:true},
+      {csvKey:'s2_q3', text:'Ich habe das Bedürfnis, mir meiner Entscheidung sicherer zu sein.',req:true}
     ]},
   3: { name:'Budget Reminder', badgeText:'S3 – Budget Reminder', badgeBg:'#e9f7e9', badgeColor:'#006600',
     infoTitle:'Budgethinweis',
     infoText:`Bitte berücksichtigen Sie Ihr Budget und was Sie sich leisten können. Vergessen Sie nicht, dass dieses Geld aus Ihrem Budget entnommen wird! Sie haben dann am Monatsende weniger Geld für Konsum und Ersparnisse zur Verfügung!\n\nIhr Budget: €200,00`,
     specificQs:[
-      {text:'Ich habe sorgfältig über die Budgetbeschränkungen nachgedacht.',req:true},
-      {text:'Die Erinnerung an meine Budgetbeschränkungen hat meine Bewertung der Produkte beeinflusst.',req:true}
+      {csvKey:'s3_q1', text:'Ich habe sorgfältig über die Budgetbeschränkungen nachgedacht.',req:true},
+      {csvKey:'s3_q2', text:'Die Erinnerung an meine Budgetbeschränkungen hat meine Bewertung der Produkte beeinflusst.',req:true}
     ]},
   4: { name:'Payment Consequentiality', badgeText:'S4 – Payment Consequentiality', badgeBg:'#f5e8f5', badgeColor:'#660066',
     infoTitle:'Wichtige Information zur Verlosung',
     infoText:`Durch die Auswahl eines Produkts nehmen Sie als Teilnehmer an einer Verlosung teil. Falls Sie zufällig ausgewählt werden, müssen Sie das Produkt zum angegebenen Preis in einer echten Transaktion mit Ihrem eigenen Geld kaufen.`,
     specificQs:[
-      {text:'Ich habe sorgfältig über die ursprünglich erläuterten Konsequenzen nachgedacht.',req:true},
-      {text:'Die Erklärung, dass ich das Produkt möglicherweise tatsächlich kaufen muss, hat meine Bewertung der Produkte beeinflusst.',req:true}
+      {csvKey:'s4_q1', text:'Ich habe sorgfältig über die ursprünglich erläuterten Konsequenzen nachgedacht.',req:true},
+      {csvKey:'s4_q2', text:'Die Erklärung, dass ich das Produkt möglicherweise tatsächlich kaufen muss, hat meine Bewertung der Produkte beeinflusst.',req:true}
     ]}
 };
 
@@ -471,31 +471,31 @@ const scenarios = {
 // ══════════════════════════════════════════════
 const commonQs = [
   {section:'Soziale Erwünschtheit & Selbstbild', note:'Reduced warm-glow / social desirability & positive self-image'},
-  {text:'Ich hatte das Gefühl, dass meine Entscheidungsfähigkeit beobachtet wurde.',req:true},
-  {text:'Ich fühlte mich aufgrund sozialer Erwartungen unter Druck gesetzt.',req:true},
-  {text:'Ich denke normalerweise sorgfältig über meine Entscheidungen nach, wenn ich Produkte kaufe.',req:true},
-  {text:'Ich wollte gute Entscheidungen treffen.',req:true},
+  {csvKey:'c_sd1',  text:'Ich hatte das Gefühl, dass meine Entscheidungsfähigkeit beobachtet wurde.',req:true},
+  {csvKey:'c_sd2',  text:'Ich fühlte mich aufgrund sozialer Erwartungen unter Druck gesetzt.',req:true},
+  {csvKey:'c_sd3',  text:'Ich denke normalerweise sorgfältig über meine Entscheidungen nach, wenn ich Produkte kaufe.',req:true},
+  {csvKey:'c_sd4',  text:'Ich wollte gute Entscheidungen treffen.',req:true},
   {section:'Vertrautheit & Kontextnähe', note:'Familiarity & context tangibility'},
-  {text:'Ich nutze häufig E-Commerce Shopping-Plattformen.',req:true},
-  {text:'Ich bin mit dieser Produktkategorie vertraut.',req:true},
-  {text:'Ich bin mit diesen spezifischen Produkten vertraut.',req:true},
-  {text:'Ich habe diese oder ähnliche Produkte bereits gekauft.',req:true},
-  {text:'Ich interessiere mich für diese Produkte.',req:true},
+  {csvKey:'c_fam1', text:'Ich nutze häufig E-Commerce Shopping-Plattformen.',req:true},
+  {csvKey:'c_fam2', text:'Ich bin mit dieser Produktkategorie vertraut.',req:true},
+  {csvKey:'c_fam3', text:'Ich bin mit diesen spezifischen Produkten vertraut.',req:true},
+  {csvKey:'c_fam4', text:'Ich habe diese oder ähnliche Produkte bereits gekauft.',req:true},
+  {csvKey:'c_fam5', text:'Ich interessiere mich für diese Produkte.',req:true},
   {section:'Konsequentialität & Budgetbeschränkungen', note:'Consequentiality & budget constraints'},
-  {text:'Ich denke normalerweise sorgfältig über den Preis eines Produkts nach.',req:true},
-  {text:'Ich beabsichtige / plane, das von mir ausgewählte Produkt zu kaufen.',req:true},
-  {text:'Ich hatte das Gefühl, dass diese Simulation einer echten Einkaufssituation ähnlich war.',req:true},
-  {text:'Ich habe darüber nachgedacht, wie ich mich in einer echten Kaufsituation verhalten würde.',req:true},
-  {text:'Ich habe mir vorgestellt, das Produkt tatsächlich zu erhalten.',req:true},
+  {csvKey:'c_con1', text:'Ich denke normalerweise sorgfältig über den Preis eines Produkts nach.',req:true},
+  {csvKey:'c_con2', text:'Ich beabsichtige / plane, das von mir ausgewählte Produkt zu kaufen.',req:true},
+  {csvKey:'c_con3', text:'Ich hatte das Gefühl, dass diese Simulation einer echten Einkaufssituation ähnlich war.',req:true},
+  {csvKey:'c_con4', text:'Ich habe darüber nachgedacht, wie ich mich in einer echten Kaufsituation verhalten würde.',req:true},
+  {csvKey:'c_con5', text:'Ich habe mir vorgestellt, das Produkt tatsächlich zu erhalten.',req:true},
   {section:'Kontrollvariablen', note:'Control'},
-  {text:'Meine Fähigkeiten wurden herausgefordert.',req:true},
-  {text:'Mein Status wurde herausgefordert.',req:true},
-  {text:'Ich habe meine Entscheidungen schnell und ohne lange nachzudenken getroffen.',req:true,reverse:true},
-  {text:'Ich habe mir Zeit genommen, bevor ich mich entschieden habe.',req:true},
+  {csvKey:'c_ctrl1', text:'Meine Fähigkeiten wurden herausgefordert.',req:true},
+  {csvKey:'c_ctrl2', text:'Mein Status wurde herausgefordert.',req:true},
+  {csvKey:'c_ctrl3', text:'Ich habe meine Entscheidungen schnell und ohne lange nachzudenken getroffen.',req:true,reverse:true},
+  {csvKey:'c_ctrl4', text:'Ich habe mir Zeit genommen, bevor ich mich entschieden habe.',req:true},
   {section:'Abschluss', note:'Comprehension & open feedback'},
-  {text:'Ich habe alle Fragen und Anweisungen verstanden.',req:true},
-  {text:'Bitte beschreiben Sie kurz Ihre allgemeine Wahrnehmung der Interaktion mit der Umfrage.',req:true,type:'text',placeholder:'Ihre Antwort hier...'},
-  {text:'Optional: Ihre Chance, uns Feedback zu geben. Möchten Sie etwas erwähnen oder anmerken?',req:false,type:'text',optional:true,placeholder:'Optional – Ihr Feedback...'}
+  {csvKey:'c_comp',            text:'Ich habe alle Fragen und Anweisungen verstanden.',req:true},
+  {csvKey:'c_text_perception', text:'Bitte beschreiben Sie kurz Ihre allgemeine Wahrnehmung der Interaktion mit der Umfrage.',req:true,type:'text',placeholder:'Ihre Antwort hier...'},
+  {csvKey:'c_text_feedback',   text:'Optional: Ihre Chance, uns Feedback zu geben. Möchten Sie etwas erwähnen oder anmerken?',req:false,type:'text',optional:true,placeholder:'Optional – Ihr Feedback...'}
 ];
 
 // ══════════════════════════════════════════════
@@ -652,17 +652,17 @@ function buildSurvey(){
   let html='', qIdx=0;
 
   allItems.forEach(item=>{
-    if(item.section){ return; }  // section headers not shown to participant
+    if(item.section){ return; }
     const i=qIdx++;
     const isText=item.type==='text';
     if(isText){
-      html+=`<div class="q-block" id="qblock-${i}" data-req="${item.req?1:0}" data-type="text">
+      html+=`<div class="q-block" id="qblock-${i}" data-req="${item.req?1:0}" data-type="text" data-csvkey="${item.csvKey}">
         <div class="q-label"><span class="q-num">${i+1}</span><span>${item.text}</span></div>
         <textarea class="q-textarea" name="q${i}" id="q${i}_t" placeholder="${item.placeholder||''}"></textarea>
         <div class="q-error">Bitte geben Sie eine Antwort ein.</div></div>`;
     } else {
       const opts=[1,2,3,4,5,6,7].map(v=>`<div class="likert-opt"><input type="radio" name="q${i}" id="q${i}_${v}" value="${v}"><label for="q${i}_${v}"><span class="likert-val">${v}</span></label></div>`).join('');
-      html+=`<div class="q-block" id="qblock-${i}" data-req="1" data-type="likert">
+      html+=`<div class="q-block" id="qblock-${i}" data-req="1" data-type="likert" data-csvkey="${item.csvKey}">
         <div class="q-label"><span class="q-num">${i+1}</span><span>${item.text}</span></div>
         <div class="likert-anchors"><span>Stimme überhaupt nicht zu</span><span>Stimme voll zu</span></div>
         <div class="likert-options">${opts}</div>
@@ -695,23 +695,23 @@ function updateProg(){
 
 // ── STEP 6: submit survey → go to demographics ──
 function submitSurvey(){
-  const sc = scenarios[currentScenario];
-  const allItems = [...sc.specificQs, ...commonQs];
   let ok=true, firstErr=null, answers={}, qIdx=0;
+  const allBlocks = document.querySelectorAll('#survey-questions .q-block');
 
-  allItems.forEach(item=>{
-    if(item.section) return;
-    const i=qIdx++, block=document.getElementById('qblock-'+i);
+  allBlocks.forEach(block=>{
+    const i = block.id.replace('qblock-','');
+    const key = block.dataset.csvkey;
     block.classList.remove('has-error');
-    if(item.type==='text'){
+    if(block.dataset.type==='text'){
       const v=(document.getElementById(`q${i}_t`)||{}).value||'';
-      if(item.req&&!v.trim()){ block.classList.add('has-error'); ok=false; if(!firstErr)firstErr=block; }
-      else answers['F'+(i+1)+'_text']=v.trim();
+      if(block.dataset.req==='1'&&!v.trim()){ block.classList.add('has-error'); ok=false; if(!firstErr)firstErr=block; }
+      else answers[key]=v.trim();
     } else {
       const c=document.querySelector(`input[name="q${i}"]:checked`);
       if(!c){ block.classList.add('has-error'); ok=false; if(!firstErr)firstErr=block; }
-      else answers['F'+(i+1)]=parseInt(c.value);
+      else answers[key]=parseInt(c.value);
     }
+    qIdx++;
   });
 
   if(!ok){ firstErr.scrollIntoView({behavior:'smooth',block:'center'}); return; }
@@ -759,22 +759,24 @@ async function submitDemographics(){
 
   if(!ok){ firstErr.scrollIntoView({behavior:'smooth', block:'center'}); return; }
 
-  // ── Pre-populate ALL possible question fields with -1 / '' so every row in
-  //    the CSV has identical columns regardless of scenario.
-  //
-  //    Scenario  | specific Qs | text field keys
-  //    S0        |  0          | F20_text, F21_text
-  //    S1/S3/S4  |  2          | F22_text, F23_text
-  //    S2        |  3          | F23_text, F24_text
-  //
-  //    → Likert defaults:    F1 … F22  = -1
-  //    → Text defaults: F20_text … F24_text = ''
-  const MAX_LIKERT = 22;
-  const TEXT_FIELDS = ['F20_text','F21_text','F22_text','F23_text','F24_text'];
-
-  const defaults = {};
-  for (let n = 1; n <= MAX_LIKERT; n++) defaults['F' + n] = -1;
-  TEXT_FIELDS.forEach(k => defaults[k] = '');
+  // ── Pre-populate ALL question columns with -1 / '' so every CSV row is
+  //    identical in structure regardless of scenario.
+  //    Scenario-specific keys not shown to a participant stay at -1.
+  const defaults = {
+    // Scenario-specific (only the participant's scenario will overwrite these)
+    s1_q1:-1, s1_q2:-1,
+    s2_q1:-1, s2_q2:-1, s2_q3:-1,
+    s3_q1:-1, s3_q2:-1,
+    s4_q1:-1, s4_q2:-1,
+    // Common Likert
+    c_sd1:-1, c_sd2:-1, c_sd3:-1, c_sd4:-1,
+    c_fam1:-1, c_fam2:-1, c_fam3:-1, c_fam4:-1, c_fam5:-1,
+    c_con1:-1, c_con2:-1, c_con3:-1, c_con4:-1, c_con5:-1,
+    c_ctrl1:-1, c_ctrl2:-1, c_ctrl3:-1, c_ctrl4:-1,
+    c_comp:-1,
+    // Common free text
+    c_text_perception:'', c_text_feedback:''
+  };
 
   const entry = {
     id: participantId,
