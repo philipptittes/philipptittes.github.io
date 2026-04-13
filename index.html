@@ -223,10 +223,11 @@
       <div><div style="font-size:10px;line-height:1">Einkaufs-</div><div>wagen</div></div>
       <div class="cart-count">0</div>
     </button>
+   <div id="budget-badge" style="display:none;background:#e9f7e9;border:1px solid #81C784;border-radius:var(--radius);padding:5px 12px;font-size:13px;font-weight:500;color:#006600;white-space:nowrap;">Ihr Budget: €200,00</div>        
   </div>
   <div class="header-sub">
     <a onclick="goHome()">Alle Kategorien</a>
-    <a>Heute's Angebote</a>
+    <a>Angebote Heute</a>
     <a>Kundenservice</a>
   </div>
 </header>
@@ -609,7 +610,7 @@ function startStudy(){
 }
 
 // ── STEP 2: enter shop ──
-function enterShop(){ renderProducts(); showPage('shop'); }
+function enterShop(){ renderProducts(); document.getElementById('budget-badge').style.display = currentScenario === 3 ? 'block' : 'none'; showPage('shop'); }
 
 function starsOf(r){ return [1,2,3,4,5].map(i=>i<=Math.round(r)?'★':'☆').join(''); }
 
