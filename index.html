@@ -255,7 +255,7 @@
         <h2 id="info-title"></h2>
         <div class="info-divider"></div>
         <div class="info-body" id="info-body"></div>
-        <div><button class="info-btn" onclick="enterShop()">Zum Shop →</button></div>
+        <div><button class="info-btn" id="info-proceed-btn" onclick="enterShop()" disabled style="opacity:0.45;cursor:not-allowed;">Zum Shop → (<span id="info-countdown">3</span>)</button></div>
         <div class="info-note">Bitte lesen Sie den obigen Hinweis vollständig, bevor Sie fortfahren.</div>
       </div>
     </div>
@@ -433,18 +433,18 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwB7A5PdG1ALDAMPUNJJ
 const scenarios = {
   0: { name:'Control', badgeText:'S0 – Control', badgeBg:'#f0f0f0', badgeColor:'#444',
     infoTitle:'Hinweis vor dem Einkauf',
-    infoText:`Nimm dir Zeit, bevor du eine Entscheidung triffst und schaue dir im Detail die Produktseiten an. \n Bitte verhalte dich in dieser Simulation eines Marktplatzes so, wie du es auch bei einem regulären Einkauf auf Amazon tun würdest. Wähle nur das Produkt aus, das du auch im echten Leben kaufen würdest. \n Kein echtes Geld erforderlich: In dieser Simulation ist kein echtes Geld involviert. Du kannst das Produkt in deinen Warenkorb legen und den Kauf abschließen, ohne dafür zu bezahlen.`,
+    infoText:`Nimm dir Zeit, bevor du eine Entscheidung triffst und schaue dir im Detail die Produktseiten an. Bitte verhalte dich in dieser Simulation eines Marktplatzes so, wie du es auch bei einem regulären Einkauf auf Amazon tun würdest. Wähle nur das Produkt aus, das du auch im echten Leben kaufen würdest. Kein echtes Geld erforderlich: In dieser Simulation ist kein echtes Geld involviert. Du kannst das Produkt in deinen Warenkorb legen und den Kauf abschließen, ohne dafür zu bezahlen.`,
     specificQs:[] },
   1: { name:'Cheap Talk', badgeText:'S1 – Cheap Talk', badgeBg:'#e8f4fd', badgeColor:'#0066aa',
     infoTitle:'Wichtiger Hinweis zur Befragung',
-    infoText:`Bitte berücksichtigen Sie diese Informationen, wenn Sie die folgenden Fragen beantworten. \n\n Die Produkte, die Sie sehen werden, sind echte Produkte, die zum Kauf angeboten werden. Da es sich jedoch um ein Forschungsprojekt handelt, bitten wir Sie nicht, einen tatsächlichen Kauf zu tätigen. \n Dennoch möchten wir Sie bitten, die folgende Frage so zu beantworten, als handele es sich um eine tatsächliche Kaufaufforderung. Studien haben gezeigt, dass es für viele Menschen schwierig ist, eine Frage zu einem hypothetischen Kauf so zu beantworten, als handele es sich um einen tatsächlichen Kauf. \n Wir stellen immer wieder fest, dass mehr Personen sagen, dass sie in einer hypothetischen Situation einen Kauf tätigen würden, als wenn die Situation real ist. Ein Grund dafür ist unserer Meinung nach, dass die Befragten bei einem hypothetischen Kauf denken könnten: „Klar, ich kaufe das, das verschlechtert meine Situation nicht." Wenn die Entscheidung jedoch mit einem tatsächlichen Kauf verbunden ist, denken die Befragten möglicherweise: „Möchte ich wirklich mein Geld für dieses Produkt ausgeben?" \n Wir bitten Sie, dieses Problem zu vermeiden und die folgende Frage so zu beantworten, als wäre es eine tatsächliche Kaufanfrage.`,
+    infoText:`Bitte berücksichtigen Sie diese Informationen, wenn Sie die folgenden Fragen beantworten. Die Produkte, die Sie sehen werden, sind echte Produkte, die zum Kauf angeboten werden. Da es sich jedoch um ein Forschungsprojekt handelt, bitten wir Sie nicht, einen tatsächlichen Kauf zu tätigen. Dennoch möchten wir Sie bitten, die folgende Frage so zu beantworten, als handele es sich um eine tatsächliche Kaufaufforderung. Studien haben gezeigt, dass es für viele Menschen schwierig ist, eine Frage zu einem hypothetischen Kauf so zu beantworten, als handele es sich um einen tatsächlichen Kauf. Wir stellen immer wieder fest, dass mehr Personen sagen, dass sie in einer hypothetischen Situation einen Kauf tätigen würden, als wenn die Situation real ist. Ein Grund dafür ist unserer Meinung nach, dass die Befragten bei einem hypothetischen Kauf denken könnten: „Klar, ich kaufe das, das verschlechtert meine Situation nicht." Wenn die Entscheidung jedoch mit einem tatsächlichen Kauf verbunden ist, denken die Befragten möglicherweise: „Möchte ich wirklich mein Geld für dieses Produkt ausgeben?" Wir bitten Sie, dieses Problem zu vermeiden und die folgende Frage so zu beantworten, als wäre es eine tatsächliche Kaufanfrage.`,
     specificQs:[
       {csvKey:'s1_q1', text:'Ich habe sorgfältig über das ursprünglich erläuterte Konzept nachgedacht.',req:true},
       {csvKey:'s1_q2', text:'Die Erläuterung der hypothetischen Verzerrung hat meine Bewertung der Produkte beeinflusst.',req:true}
     ]},
   2: { name:'Certainty Scale', badgeText:'S2 – Certainty Scale', badgeBg:'#fef0e6', badgeColor:'#aa4400',
     infoTitle:'Hinweis vor dem Einkauf',
-    infoText:`Nimm dir Zeit, bevor du eine Entscheidung triffst und schaue dir im Detail die Produktseiten an. \n Bitte verhalte dich in dieser Simulation eines Marktplatzes so, wie du es auch bei einem regulären Einkauf auf Amazon tun würdest. Wähle nur das Produkt aus, das du auch im echten Leben kaufen würdest. \n Kein echtes Geld erforderlich: In dieser Simulation ist kein echtes Geld involviert. Du kannst das Produkt in deinen Warenkorb legen und den Kauf abschließen, ohne dafür zu bezahlen.`,
+    infoText:`Nimm dir Zeit, bevor du eine Entscheidung triffst und schaue dir im Detail die Produktseiten an. Bitte verhalte dich in dieser Simulation eines Marktplatzes so, wie du es auch bei einem regulären Einkauf auf Amazon tun würdest. Wähle nur das Produkt aus, das du auch im echten Leben kaufen würdest. Kein echtes Geld erforderlich: In dieser Simulation ist kein echtes Geld involviert. Du kannst das Produkt in deinen Warenkorb legen und den Kauf abschließen, ohne dafür zu bezahlen.`,
     specificQs:[
       {csvKey:'s2_q1', text:'Die Gewissheitsskala hat mich dazu veranlasst, meine Wahl zu überdenken.',req:true},
       {csvKey:'s2_q2', text:'Die Beantwortung der Gewissheitsskala hat meine Bewertung der Produkte beeinflusst.',req:true},
@@ -519,15 +519,33 @@ const demoFields = [
 // PRODUCTS
 // ══════════════════════════════════════════════
 const products = [
-  {id:1,name:'TEMPUR Sonata Kopfkissen Memory Foam – Ergonomisches Schlafkissen für Seiten- & Rückenschläfer',brand:'TEMPUR',price:'108,00',rating:4.3,reviews:862,prime:true,img:'https://images-na.ssl-images-amazon.com/images/P/B00UYWJ7YY.01.LZZZZZZZ.jpg',features:['Memory-Foam-Technologie für individuelle Anpassung','Ergonomische Form für Nacken- & Schulterentlastung','Waschbarer Bezug (60 °C)','Größe: 50 × 30 cm','10 Jahre Garantie'],seller:'TEMPUR GmbH'},
-  {id:2,name:'sleepi® Comfort | Orthopädisches Kopfkissen – zertifiziertes Nackenstützkissen',brand:'sleepi',price:'99,00',rating:4.1,reviews:305,prime:false,img:'https://images-na.ssl-images-amazon.com/images/P/B09XMMYP7H.01.LZZZZZZZ.jpg',features:['Orthopädisch geformt für optimale Nackenstütze','Klimaregulierende Oberflächenstruktur','OEKO-TEX® Standard 100 zertifiziert','Geeignet für alle Schlafpositionen','Maße: 60 × 40 cm'],seller:'Sleepi GmbH'},
-  {id:3,name:'M LINE | Athletic Pillow | Kopfkissen – Nackenstütze für Sportler',brand:'M LINE',price:'129,00',rating:4.4,reviews:402,prime:true,img:'https://images-na.ssl-images-amazon.com/images/P/B08QW67BN6.01.LZZZZZZZ.jpg',features:['Speziell für Sportler entwickelt','Memory-Schaum mit kühlender Gel-Schicht','Antibakteriell und hypoallergen','Zertifiziert: Deutsche Handwerkskunst','2 Jahre Garantie'],seller:'M line'},
-  {id:4,name:'Coop Home Goods Eden Cool – verstellbares Kissen mit Kühleffekt',brand:'Coop Home Goods',price:'177,00',rating:4.5,reviews:4862,prime:true,img:'https://images-na.ssl-images-amazon.com/images/P/B0BQRFVY4Z.01.LZZZZZZZ.jpg',features:['Verstellbare Füllung – individuelle Höhenanpassung','Kühlender Lilly Silk® Bezug','Hypoallergen & maschinenwaschbar','Vom Schlaftherapeuten empfohlen','Maße: 65 × 40 cm'],seller:'Coop Home Goods'},
-  {id:5,name:'Royal Therapy King Memory Foam Kissen – Ergonomisches Bambus-Kopfkissen mit 3-Schicht-Technologie',brand:'Royal Therapy',price:'193,00',rating:4.4,reviews:2044,prime:false,img:'https://images-na.ssl-images-amazon.com/images/P/B083GCKD6S.01.LZZZZZZZ.jpg',features:['3-Schicht Memory Foam','Bamboo-Bezug – natürlich & atmungsaktiv','King-Size: 90 × 50 cm','Beidseitig nutzbar: weich / mittelfest','Inkl. Tragetasche'],seller:'Royal Therapy'},
-  {id:6,name:'BLACKROLL® Recovery Pillow (50 × 30 cm) – Kopfkissen für aktive Regeneration',brand:'BLACKROLL',price:'112,78',rating:4.3,reviews:4740,prime:true,img:'https://images-na.ssl-images-amazon.com/images/P/B07KCF3LHR.01.LZZZZZZZ.jpg',features:['Von Sportmedizinern entwickelt','Unterstützt aktive Erholung','Waschbarer Bezug mit Reißverschluss','Ideal für Seiten- und Bauchschläfer','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
-  {id:7,name:'allnatura Orthopädisches Naturlatex-Kopfkissen – ökologisches Nackenstützkissen (bio-zertifiziert)',brand:'allnatura',price:'123,00',rating:3.4,reviews:5,prime:true,img:'https://images-na.ssl-images-amazon.com/images/P/B0CLDCD7QD.01.LZZZZZZZ.jpg',features:['100% Naturlatex aus nachhaltigem Anbau','GOLS-zertifiziert','Stufenlos anpassbare Höhe','Langlebig: bis zu 20 Jahre','Produziert in Deutschland'],seller:'allnatura'},
-  {id:8,name:'BLACKROLL® Recovery Pillow PLUS (60 x 40 cm) – Ergonomisches Kopfkissen, höhenverstellbar',brand:'BLACKROLL',price:'199,99',rating:4.3,reviews:1255,prime:false,img:'https://images-na.ssl-images-amazon.com/images/P/B0FWKYQ32Y.01.LZZZZZZZ.jpg',features:['Höhenverstellbar durch herausnehmbares Innenkissen','Ergonomische Form für Seiten- & Rückenschläfer','Von Sportmedizinern entwickelt','Maße: 60 × 40 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
-  {id:9,name:'BLACKROLL® Recovery Pillow KIDS (50 x 30 cm) – Ergonomisches Kopfkissen für Kinder',brand:'BLACKROLL',price:'79,90',rating:4.3,reviews:1255,prime:false,img:'https://images-na.ssl-images-amazon.com/images/P/B0FWKMYS7B.01.LZZZZZZZ.jpg',features:['Speziell für Kinder entwickelt (3–12 Jahre)','Ergonomische Stützform für gesundes Wachstum','Waschbarer Bezug mit Reißverschluss','Maße: 50 × 30 × 6 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'}
+  {id:1,name:'TEMPUR Sonata Kopfkissen Memory Foam – Ergonomisches Schlafkissen für Seiten- & Rückenschläfer',brand:'TEMPUR',price:'108,00',rating:4.3,reviews:862,prime:true,
+   imgs:['https://m.media-amazon.com/images/I/71tinBF2TDL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/71LvUCLOyJL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/817ZBH-5-4L._AC_SL1500_.jpg'],
+   features:['Memory-Foam-Technologie für individuelle Anpassung','Ergonomische Form für Nacken- & Schulterentlastung','Waschbarer Bezug (60 °C)','Größe: 50 × 30 cm','10 Jahre Garantie'],seller:'TEMPUR GmbH'},
+  {id:2,name:'sleepi® Comfort | Orthopädisches Kopfkissen – zertifiziertes Nackenstützkissen',brand:'sleepi',price:'99,00',rating:4.1,reviews:305,prime:false,
+   imgs:['https://m.media-amazon.com/images/I/51soGf3nf1L._AC_SL1200_.jpg','https://m.media-amazon.com/images/I/61iVE8d4cqL._AC_SL1200_.jpg','https://m.media-amazon.com/images/I/716t-GjX+NL._AC_SL1200_.jpg'],
+   features:['Orthopädisch geformt für optimale Nackenstütze','Klimaregulierende Oberflächenstruktur','OEKO-TEX® Standard 100 zertifiziert','Geeignet für alle Schlafpositionen','Maße: 60 × 40 cm'],seller:'Sleepi GmbH'},
+  {id:3,name:'M LINE | Athletic Pillow | Kopfkissen – Nackenstütze für Sportler',brand:'M LINE',price:'129,00',rating:4.4,reviews:402,prime:true,
+   imgs:['https://m.media-amazon.com/images/I/81r1xKIJSmL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/71BrrJv5RjL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/819zwZvDSFL._AC_SL1500_.jpg'],
+   features:['Speziell für Sportler entwickelt','Memory-Schaum mit kühlender Gel-Schicht','Antibakteriell und hypoallergen','Zertifiziert: Deutsche Handwerkskunst','2 Jahre Garantie'],seller:'M line'},
+  {id:4,name:'Coop Home Goods Eden Cool – verstellbares Kissen mit Kühleffekt',brand:'Coop Home Goods',price:'177,00',rating:4.5,reviews:4862,prime:true,
+   imgs:['https://m.media-amazon.com/images/I/6165SNHE5KL._AC_SL1000_.jpg','https://m.media-amazon.com/images/I/61JxLm+UUmL._AC_SL1000_.jpg','https://m.media-amazon.com/images/I/61I4zoXlsmL._AC_SL1000_.jpg'],
+   features:['Verstellbare Füllung – individuelle Höhenanpassung','Kühlender Lilly Silk® Bezug','Hypoallergen & maschinenwaschbar','Vom Schlaftherapeuten empfohlen','Maße: 65 × 40 cm'],seller:'Coop Home Goods'},
+  {id:5,name:'Royal Therapy King Memory Foam Kissen – Ergonomisches Bambus-Kopfkissen mit 3-Schicht-Technologie',brand:'Royal Therapy',price:'193,00',rating:4.4,reviews:2044,prime:false,
+   imgs:['https://m.media-amazon.com/images/I/61xXVRE8jdL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/71Yrp0MQAPL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/61NBWw6mJQL._AC_SL1500_.jpg'],
+   features:['3-Schicht Memory Foam','Bamboo-Bezug – natürlich & atmungsaktiv','King-Size: 90 × 50 cm','Beidseitig nutzbar: weich / mittelfest','Inkl. Tragetasche'],seller:'Royal Therapy'},
+  {id:6,name:'BLACKROLL® Recovery Pillow (50 × 30 cm) – Kopfkissen für aktive Regeneration',brand:'BLACKROLL',price:'112,78',rating:4.3,reviews:4740,prime:true,
+   imgs:['https://m.media-amazon.com/images/I/71Vek6VdL9L._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/71hKBF91nuL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/81Oo85Gw1vL._AC_SL1500_.jpg'],
+   features:['Von Sportmedizinern entwickelt','Unterstützt aktive Erholung','Waschbarer Bezug mit Reißverschluss','Ideal für Seiten- und Bauchschläfer','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
+  {id:7,name:'allnatura Orthopädisches Naturlatex-Kopfkissen – ökologisches Nackenstützkissen (bio-zertifiziert)',brand:'allnatura',price:'123,00',rating:3.4,reviews:5,prime:true,
+   imgs:['https://m.media-amazon.com/images/I/51u58qOok8L._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/71FmlQunokL._AC_SL1500_.jpg','https://m.media-amazon.com/images/I/71eC3gT51wL._AC_SL1500_.jpg'],
+   features:['100% Naturlatex aus nachhaltigem Anbau','GOLS-zertifiziert','Stufenlos anpassbare Höhe','Langlebig: bis zu 20 Jahre','Produziert in Deutschland'],seller:'allnatura'},
+  {id:8,name:'BLACKROLL® Recovery Pillow PLUS (60 x 40 cm) – Ergonomisches Kopfkissen, höhenverstellbar',brand:'BLACKROLL',price:'199,99',rating:4.3,reviews:1255,prime:false,
+   imgs:['https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719983376x846011836880213400/AMZ_Visual_RecoveryPillowPlus_hohenverstellbar.jpg','https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719986344x982918967056611800/001_202507_RECOVERY-PILLOW_PLUS_sRGB_lowres_00238_aybee.jpg','https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719991241x220385497287895580/2025-07_Online_RECOVERY-PILLOW-PLUS_DE.jpg'],
+   features:['Höhenverstellbar durch herausnehmbares Innenkissen','Ergonomische Form für Seiten- & Rückenschläfer','Von Sportmedizinern entwickelt','Maße: 60 × 40 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
+  {id:9,name:'BLACKROLL® Recovery Pillow KIDS (50 x 30 cm) – Ergonomisches Kopfkissen für Kinder',brand:'BLACKROLL',price:'79,90',rating:4.3,reviews:1255,prime:false,
+   imgs:['https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719675975x572394591478019100/Kids%20Pillow_Bild%20Shop%20mit%20Kids%20Logo.jpg','https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719683616x613102902135753500/001_202507_RECOVERY-PILLOW_KIDS_sRGB_lowres_00166.jpg','https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719688671x424727083385092700/001_202507_RECOVERY-PILLOW_KIDS_sRGB_lowres_00247.jpg'],
+   features:['Speziell für Kinder entwickelt (3–12 Jahre)','Ergonomische Stützform für gesundes Wachstum','Waschbarer Bezug mit Reißverschluss','Maße: 50 × 30 × 6 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'}
 ];
 
 // ══════════════════════════════════════════════
@@ -564,6 +582,29 @@ function startStudy(){
   const sc = scenarios[currentScenario];
   document.getElementById('info-title').textContent = sc.infoTitle;
   document.getElementById('info-body').textContent = sc.infoText;
+
+  // Lock button for 3 seconds to encourage reading
+  const btn = document.getElementById('info-proceed-btn');
+  const cd  = document.getElementById('info-countdown');
+  btn.disabled = true;
+  btn.style.opacity = '0.45';
+  btn.style.cursor = 'not-allowed';
+  btn.textContent = '';          // reset text, then rebuild
+  btn.innerHTML = 'Zum Shop → (<span id="info-countdown">3</span>)';
+  let secs = 3;
+  const timer = setInterval(() => {
+    secs--;
+    const cdEl = document.getElementById('info-countdown');
+    if(secs > 0){ if(cdEl) cdEl.textContent = secs; }
+    else {
+      clearInterval(timer);
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      btn.textContent = 'Zum Shop →';
+    }
+  }, 1000);
+
   showPage('info');
 }
 
@@ -575,7 +616,7 @@ function starsOf(r){ return [1,2,3,4,5].map(i=>i<=Math.round(r)?'★':'☆').joi
 function renderProducts(){
   document.getElementById('product-grid').innerHTML = products.map(p=>`
     <div class="product-card" onclick="openProduct(${p.id})">
-      <img class="product-img" src="${p.img}" alt="${p.brand}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23f0f0f0%22/><text x=%22100%22 y=%22115%22 text-anchor=%22middle%22 font-size=%2250%22>🛏</text></svg>'">
+      <img class="product-img" src="${p.imgs[0]}" alt="${p.brand}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23f0f0f0%22/><text x=%22100%22 y=%22115%22 text-anchor=%22middle%22 font-size=%2250%22>🛏</text></svg>'">
       <div class="product-brand">${p.brand}</div>
       <div class="product-name">${p.name}</div>
       <div class="product-rating"><span class="stars">${starsOf(p.rating)}</span><span class="review-count">${p.reviews.toLocaleString('de')}</span></div>
@@ -590,14 +631,17 @@ function openProduct(id){
   document.getElementById('detail-breadcrumb').textContent = currentProduct.brand;
   document.getElementById('detail-brand').textContent = '⬡ Marke: '+currentProduct.brand;
   document.getElementById('detail-title').textContent = currentProduct.name;
-  document.getElementById('detail-main-img').src = currentProduct.img;
+  document.getElementById('detail-main-img').src = currentProduct.imgs[0];
   document.getElementById('detail-stars').textContent = starsOf(currentProduct.rating);
   document.getElementById('detail-reviews').textContent = currentProduct.reviews.toLocaleString('de')+' Bewertungen';
   document.getElementById('detail-price').innerHTML = '<sup style="font-size:16px;vertical-align:top;margin-top:4px">€</sup>'+currentProduct.price;
   document.getElementById('buy-price').innerHTML = '<sup style="font-size:13px;vertical-align:top;margin-top:3px">€</sup>'+currentProduct.price;
   document.getElementById('buy-seller').textContent = currentProduct.seller;
   document.getElementById('detail-features').innerHTML = currentProduct.features.map(f=>`<li>${f}</li>`).join('');
-  document.getElementById('detail-thumbs').innerHTML = `<img class="detail-thumb active" src="${currentProduct.img}" alt="thumb" onclick="document.getElementById('detail-main-img').src=this.src">`;
+  // 3 clickable thumbnails — clicking switches the main image
+  document.getElementById('detail-thumbs').innerHTML = currentProduct.imgs.map((src,i)=>`
+    <img class="detail-thumb${i===0?' active':''}" src="${src}" alt="Vorschau ${i+1}"
+      onclick="document.getElementById('detail-main-img').src=this.src;document.querySelectorAll('.detail-thumb').forEach(t=>t.classList.remove('active'));this.classList.add('active')">`).join('');
   showPage('detail');
 }
 
@@ -616,7 +660,7 @@ function proceedFromDetail(){
 function buildCertaintyPage(){
   // product banner
   document.getElementById('certainty-product-banner').innerHTML = `
-    <img src="${currentProduct.img}" alt="${currentProduct.brand}" onerror="this.style.display='none'">
+    <img src="${currentProduct.imgs[0]}" alt="${currentProduct.brand}" onerror="this.style.display='none'">
     <div>
       <div class="cp-name">${currentProduct.name}</div>
       <div class="cp-price"><sup style="font-size:12px;vertical-align:top;margin-top:2px">€</sup>${currentProduct.price}</div>
