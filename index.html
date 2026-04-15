@@ -206,6 +206,7 @@
   .btn-login:hover { background:#ddb347; }
   .admin-error { color:var(--danger); font-size:13px; margin-top:8px; display:none; }
   .site-footer { background:var(--amazon-dark); color:#ccc; padding:24px 16px; margin-top:40px; text-align:center; font-size:13px; }
+  #footer-opt-out { display:none; }
   @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.shop-layout{grid-template-columns:1fr}.sidebar{display:none}.admin-stats{grid-template-columns:repeat(3,1fr)}.survey-wrap,.info-card,.certainty-wrap,.demo-wrap{padding:20px}.demo-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -419,7 +420,7 @@
   </div>
 </div>
 
-<footer class="site-footer">© 2026 Aybeezon.de – Eine Wissenschaftliche Studie an der Technischen Universität Darmstadt<span class="back-link" id="survey-back-link" onclick="optOut()">Ich bin an keinem der dargestellten Produkte interessiert.</span></footer>
+<footer class="site-footer">© 2026 Aybeezon.de – Eine Wissenschaftliche Studie an der Technischen Universität Darmstadt<span class="back-link" id="footer-opt-out" onclick="optOut()">Ich bin an keinem der dargestellten Produkte interessiert.</span></footer>
 
 <script>
 // ══════════════════════════════════════════════
@@ -572,7 +573,7 @@ async function sendToSheets(entry) {
 }
 
 // ── nav ──
-function showPage(n){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById('page-'+n).classList.add('active'); window.scrollTo(0,0); }
+function showPage(n){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById('page-'+n).classList.add('active'); document.getElementById('footer-opt-out').style.display = (n==='shop') ? 'inline-block' : 'none'; window.scrollTo(0,0); }
 function goHome(){ showPage(currentScenario!==null ? 'shop' : 'welcome'); }
 
 // ── STEP 1: assign scenario, show info ──
