@@ -643,15 +643,8 @@ function openProduct(id){
   currentProduct = products.find(p=>p.id===id);
   if(!currentProduct) return;
   if(currentProduct.optOut){
-    // Opt-out: skip detail page, go directly to survey
-    if(currentScenario===2){
-      buildCertaintyPage();
-      showPage('certainty');
-    } else {
-      buildSurvey();
-      showPage('survey');
-    }
-    return;
+      buildDemographics();
+      showPage('demographics');
   }
   document.getElementById('detail-breadcrumb').textContent = currentProduct.brand;
   document.getElementById('detail-brand').textContent = '⬡ Marke: '+currentProduct.brand;
