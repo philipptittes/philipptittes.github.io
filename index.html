@@ -641,6 +641,7 @@ function renderProducts(){
 // ── STEP 3: product detail ──
 function openProduct(id){
   currentProduct = products.find(p=>p.id===id);
+  if(!currentProduct) return;
   if(currentProduct.optOut){
     // Opt-out: skip detail page, go directly to survey
     if(currentScenario===2){
