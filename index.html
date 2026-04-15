@@ -419,7 +419,7 @@
   </div>
 </div>
 
-<footer class="site-footer">© 2026 Aybeezon.de – Eine Wissenschaftliche Studie an der Technischen Universität Darmstadt</footer>
+<footer class="site-footer">© 2026 Aybeezon.de – Eine Wissenschaftliche Studie an der Technischen Universität Darmstadt<span class="back-link" id="survey-back-link" onclick="optOut()">Ich bin an keinem der dargestellten Produkte interessiert.</span></footer>
 
 <script>
 // ══════════════════════════════════════════════
@@ -638,6 +638,12 @@ function renderProducts(){
   }).join('');
 }
 
+function optOut(){
+   buildDemographics();
+   showPage('demographics');
+   return;
+}
+ 
 // ── STEP 3: product detail ──
 function openProduct(id){
   currentProduct = products.find(p=>p.id===id);
