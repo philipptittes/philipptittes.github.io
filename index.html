@@ -645,6 +645,7 @@ function openProduct(id){
   if(currentProduct.optOut){
       buildDemographics();
       showPage('demographics');
+      return;
   }
   document.getElementById('detail-breadcrumb').textContent = currentProduct.brand;
   document.getElementById('detail-brand').textContent = '⬡ Marke: '+currentProduct.brand;
