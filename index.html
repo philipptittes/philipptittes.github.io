@@ -546,7 +546,9 @@ const products = [
    features:['Höhenverstellbar durch herausnehmbares Innenkissen','Ergonomische Form für Seiten- & Rückenschläfer','Von Sportmedizinern entwickelt','Maße: 60 × 40 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
   {id:9,name:'BLACKROLL® Recovery Pillow KIDS (50 x 30 cm) – Ergonomisches Kopfkissen für Kinder',brand:'BLACKROLL',price:'79,90',rating:4.3,reviews:1255,prime:false,
    imgs:['https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719675975x572394591478019100/Kids%20Pillow_Bild%20Shop%20mit%20Kids%20Logo.jpg','https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719683616x613102902135753500/001_202507_RECOVERY-PILLOW_KIDS_sRGB_lowres_00166.jpg','https://3a9ac4562611a742e77f4c470f11dcf2.cdn.bubble.io/f1770719688671x424727083385092700/001_202507_RECOVERY-PILLOW_KIDS_sRGB_lowres_00247.jpg'],
-   features:['Speziell für Kinder entwickelt (3–12 Jahre)','Ergonomische Stützform für gesundes Wachstum','Waschbarer Bezug mit Reißverschluss','Maße: 50 × 30 × 6 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'}
+   features:['Speziell für Kinder entwickelt (3–12 Jahre)','Ergonomische Stützform für gesundes Wachstum','Waschbarer Bezug mit Reißverschluss','Maße: 50 × 30 × 6 cm','OEKO-TEX® zertifiziert'],seller:'BLACKROLL®'},
+  {id:10,name:'Keines der angezeigten Produkte kaufen',brand:'Opt-Out',price:'0,00',rating:0,reviews:0,prime:false,optOut:true,
+   imgs:[],features:[],seller:'–'}
 ];
 
 // ══════════════════════════════════════════════
@@ -615,20 +617,41 @@ function enterShop(){ renderProducts(); document.getElementById('budget-badge').
 function starsOf(r){ return [1,2,3,4,5].map(i=>i<=Math.round(r)?'★':'☆').join(''); }
 
 function renderProducts(){
-  document.getElementById('product-grid').innerHTML = products.map(p=>`
-    <div class="product-card" onclick="openProduct(${p.id})">
+  document.getElementById('product-grid').innerHTML = products.map(p=>{
+    if(p.optOut){
+      return `<div class="product-card" onclick="openProduct(${p.id})" style="display:flex;align-items:center;justify-content:center;border:2px dashed #bbb;background:#fafafa;min-height:260px;cursor:pointer;">
+        <div style="text-align:center;padding:24px;">
+          <div style="font-size:40px;margin-bottom:12px;">🚫</div>
+          <div style="font-size:15px;font-weight:700;color:#333;">Keines der angezeigten Produkte kaufen</div>
+          <div style="font-size:13px;color:#888;margin-top:8px;">Ich möchte kein Produkt auswählen</div>
+        </div>
+      </div>`;
+    }
+    return `<div class="product-card" onclick="openProduct(${p.id})">
       <img class="product-img" src="${p.imgs[0]}" alt="${p.brand}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23f0f0f0%22/><text x=%22100%22 y=%22115%22 text-anchor=%22middle%22 font-size=%2250%22>🛏</text></svg>'">
       <div class="product-brand">${p.brand}</div>
       <div class="product-name">${p.name}</div>
       <div class="product-rating"><span class="stars">${starsOf(p.rating)}</span><span class="review-count">${p.reviews.toLocaleString('de')}</span></div>
       <div class="product-price"><sup style="font-size:11px;vertical-align:top;margin-top:3px">€</sup>${p.price}</div>
       ${p.prime?'<div style="color:#00A8E1;font-size:12px;font-weight:600;margin-bottom:4px">✓ prime</div>':''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ── STEP 3: product detail ──
 function openProduct(id){
   currentProduct = products.find(p=>p.id===id);
+  if(currentProduct.optOut){
+    // Opt-out: skip detail page, go directly to survey
+    if(currentScenario===2){
+      buildCertaintyPage();
+      showPage('certainty');
+    } else {
+      buildSurvey();
+      showPage('survey');
+    }
+    return;
+  }
   document.getElementById('detail-breadcrumb').textContent = currentProduct.brand;
   document.getElementById('detail-brand').textContent = '⬡ Marke: '+currentProduct.brand;
   document.getElementById('detail-title').textContent = currentProduct.name;
